@@ -1139,7 +1139,7 @@ function renderQuestion() {
   wrongPicks = [];
   isAnswered = false;
   strikeCount = 0;
-  // Hẹn giờ bật nhạc chờ câu hỏi (loop, vol 0.35) sau 20s hiển thị đáp án
+  // Hẹn giờ bật nhạc chờ câu hỏi (loop, vol 0.35): phát từ giây 15, to dần đến giây 20
   startQuestionWaitMusic();
 }
 
@@ -1515,17 +1515,18 @@ function stopWaitMusic() {
   }
 }
 
-// Nhạc chờ câu hỏi - phát loop sau khi hiện đáp án 20s, CHỈ tắt khi chọn đáp án
+// Nhạc chờ câu hỏi - phát loop từ giây 15, to dần đều đến giây 20 đạt vol chuẩn, CHỈ tắt khi chọn đáp án
 let questionWaitMusic = null;
 let questionWaitTimer = null;
-const QUESTION_WAIT_DELAY = 20000;
+const QUESTION_WAIT_DELAY = 15000;
 const QUESTION_WAIT_VOL = 0.35;
+const QUESTION_WAIT_FADEIN = 5000; // 15s→20s: to dần đều lên vol chuẩn
 
 function startQuestionWaitMusic() {
   stopQuestionWaitMusic(0);
   if (!soundEnabled) return;
   initSFX();
-  // Chờ 20s sau khi câu hỏi hiện ra mới phát (nếu vẫn chưa trả lời)
+  // Phát từ giây 15 sau khi câu hỏi hiện ra (nếu vẫn chưa trả lời), rồi to dần đến giây 20
   questionWaitTimer = setTimeout(() => {
     questionWaitTimer = null;
     if (!soundEnabled) return;
@@ -1533,10 +1534,20 @@ function startQuestionWaitMusic() {
     if (!quizActive) return;
     if (document.getElementById('setPanelOverlay').classList.contains('show')) return;
     if (document.getElementById('finishOverlay').classList.contains('show')) return;
-    questionWaitMusic = new Audio(SFX.nhacChoCauHoi.src);
-    questionWaitMusic.loop = true;
-    questionWaitMusic.volume = QUESTION_WAIT_VOL;
-    questionWaitMusic.play().catch(() => {});
+    const a = new Audio(SFX.nhacChoCauHoi.src);
+    a.loop = true;
+    a.volume = 0;
+    questionWaitMusic = a;
+    a.play().catch(() => {});
+    // To dần đều trong 5s lên mức chuẩn
+    const steps = 50, stepTime = QUESTION_WAIT_FADEIN / steps;
+    let i = 0;
+    const iv = setInterval(() => {
+      if (questionWaitMusic !== a) { clearInterval(iv); return; }
+      i++;
+      try { a.volume = Math.min(QUESTION_WAIT_VOL, QUESTION_WAIT_VOL * i / steps); } catch(e) {}
+      if (i >= steps) clearInterval(iv);
+    }, stepTime);
   }, QUESTION_WAIT_DELAY);
 }
 
