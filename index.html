@@ -1123,7 +1123,7 @@ function renderQuestion() {
   wrongPicks = [];
   isAnswered = false;
   strikeCount = 0;
-  // Bật nhạc chờ câu hỏi (loop) mỗi khi hiển thị đáp án
+  // Hẹn giờ bật nhạc chờ câu hỏi (loop, vol 0.35) sau 18s hiển thị đáp án
   startQuestionWaitMusic();
 }
 
@@ -1497,20 +1497,36 @@ function stopWaitMusic() {
   }
 }
 
-// Nhạc chờ câu hỏi - loop khi hiển thị đáp án, CHỈ tắt khi chọn đáp án
+// Nhạc chờ câu hỏi - phát loop sau khi hiện đáp án 18s, CHỈ tắt khi chọn đáp án
 let questionWaitMusic = null;
+let questionWaitTimer = null;
+const QUESTION_WAIT_DELAY = 18000;
+const QUESTION_WAIT_VOL = 0.35;
 
 function startQuestionWaitMusic() {
+  stopQuestionWaitMusic(0);
   if (!soundEnabled) return;
   initSFX();
-  stopQuestionWaitMusic(0);
-  questionWaitMusic = new Audio(SFX.nhacChoCauHoi.src);
-  questionWaitMusic.loop = true;
-  questionWaitMusic.volume = 0.55;
-  questionWaitMusic.play().catch(() => {});
+  // Chờ 18s sau khi câu hỏi hiện ra mới phát (nếu vẫn chưa trả lời)
+  questionWaitTimer = setTimeout(() => {
+    questionWaitTimer = null;
+    if (!soundEnabled) return;
+    if (isAnswered) return;
+    if (!quizActive) return;
+    if (document.getElementById('setPanelOverlay').classList.contains('show')) return;
+    if (document.getElementById('finishOverlay').classList.contains('show')) return;
+    questionWaitMusic = new Audio(SFX.nhacChoCauHoi.src);
+    questionWaitMusic.loop = true;
+    questionWaitMusic.volume = QUESTION_WAIT_VOL;
+    questionWaitMusic.play().catch(() => {});
+  }, QUESTION_WAIT_DELAY);
 }
 
 function stopQuestionWaitMusic(fadeMs = 250) {
+  if (questionWaitTimer) {
+    clearTimeout(questionWaitTimer);
+    questionWaitTimer = null;
+  }
   if (questionWaitMusic) {
     const m = questionWaitMusic;
     questionWaitMusic = null;
@@ -1518,7 +1534,7 @@ function stopQuestionWaitMusic(fadeMs = 250) {
     // Fadeout nhanh để không đè lên tiếng đúng/sai
     const steps = 10;
     let i = 0;
-    const baseVol = m.volume || 0.55;
+    const baseVol = m.volume || QUESTION_WAIT_VOL;
     const iv = setInterval(() => {
       i++;
       try { m.volume = Math.max(0, baseVol * (1 - i / steps)); } catch(e) {}
