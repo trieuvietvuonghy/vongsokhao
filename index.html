@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hội Thi Cán Bộ Kiểm Tra Giỏi - Xã Triệu Việt Vương 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap');
+
+  :root {
+    --primary: #c8102e;
+    --primary-dark: #800010;
+    --gold: #f8c024;
+    --gold-light: #ffea79;
+    --gold-dark: #c98a0c;
+    --gold-border: rgba(248, 192, 36, 0.45);
+    --success: #22c55e;
+    --danger: #ef4444;
+    --bg-dark-1: #1a0105;
+    --bg-dark-2: #2e040c;
+    --bg-dark-3: #120104;
+  }
+
+  html, body {
+    font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at 50% 25%, var(--bg-dark-2) 0%, var(--bg-dark-1) 50%, var(--bg-dark-3) 100%);
+    min-height: 100vh;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(248, 192, 36, 0.16) 0%, transparent 60%),
+      radial-gradient(circle at 10% 90%, rgba(200, 16, 46, 0.2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 90%, rgba(200, 16, 46, 0.2) 0%, transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bg-anim {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .bg-anim span {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--gold-light) 0%, rgba(248, 192, 36, 0.2) 60%, transparent 100%);
+    animation: twinkleFloat linear infinite;
+  }
+  @keyframes twinkleFloat {
+    0% { transform: translateY(105vh) scale(0.3); opacity: 0; }
+    20% { opacity: 0.85; }
+    80% { opacity: 0.85; }
+    100% { transform: translateY(-5vh) scale(1.1); opacity: 0; }
+  }
+
+  .stage {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 50px 130px;
+  }
+
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .brand-logo {
+    width: 62px;
+    height: 62px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.35);
+    border: 2px solid var(--gold-border);
+    padding: 4px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+  .brand-text .org {
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .brand-text .title {
+    font-size: 15px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff, var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
+  }
+
+  .round-badge {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border: 2px solid var(--gold);
+    padding: 8px 26px;
+    border-radius: 16px;
+    font-weight: 800;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(200,16,46,0.4);
+  }
+  .round-badge .line1 {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  .round-badge .line2 {
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--gold-light);
+    margin-top: 2px;
+  }
+
+  .question-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    min-height: 0;
+  }
+
+  .q-counter {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 16px 0 18px;
+    flex-shrink: 0;
+  }
+  .q-num {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: #1a1a1a;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 900;
+    box-shadow: 0 0 0 4px rgba(255,215,0,0.3), 0 6px 18px rgba(0,0,0,0.4);
+  }
+  .q-label {
+    font-size: 28px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .q-text {
+    font-size: clamp(26px, 3.6vw, 48px);
+    font-weight: 800;
+    line-height: 1.3;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.6);
+    max-width: 1700px;
+    margin: 0 auto 28px;
+    flex-shrink: 0;
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    width: 100%;
+    max-width: 1700px;
+    flex-shrink: 0;
+  }
+  .opt {
+    background: rgba(255,255,255,0.04);
+    border: 3px solid rgba(255,255,255,0.18);
+    border-radius: 24px;
+    padding: 28px 36px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    min-height: 140px;
+    cursor: pointer;
+  }
+  .opt:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    background: rgba(255,215,0,0.06);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+  .opt-letter {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e3a8a, #1e40af);
+    border: 4px solid rgba(255,255,255,0.3);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 900;
+    transition: all 0.4s;
+  }
+  .opt:hover .opt-letter {
+    background: var(--gold);
+    color: #1a1a1a;
+    border-color: var(--gold);
+  }
+  .opt-text {
+    flex: 1;
+    font-size: clamp(20px, 2.4vw, 32px);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .opt.picked-wrong {
+    background: linear-gradient(135deg, rgba(239,68,68,0.25), rgba(239,68,68,0.08));
+    border-color: var(--danger);
+    box-shadow: 0 0 0 4px rgba(239,68,68,0.2), 0 0 30px rgba(239,68,68,0.3);
+    animation: wrongShake 0.5s ease;
+    cursor: not-allowed;
+  }
+  .opt.picked-wrong .opt-letter {
+    background: var(--danger);
+    border-color: #fff;
+  }
+  .opt.picked-wrong::before {
+    content: '✗';
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    font-size: 44px;
+    color: var(--danger);
+    font-weight: 900;
+    text-shadow: 0 0 16px rgba(239,68,68,0.8);
+  }
+  .opt.picked-wrong:hover { transform: none; }
+  .opt.picked-wrong:hover .opt-letter { background: var(--danger); color: white; }
+  @keyframes wrongShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+  }
+
+  .opt.picked-correct {
+    background: linear-gradient(135deg, rgba(34,197,94,0.3), rgba(34,197,94,0.1));
+    border-color: var(--success);
+    box-shadow: 0 0 0 5px rgba(34,197,94,0.3), 0 0 60px rgba(34,197,94,0.4);
+    cursor: default;
+  }
+  .opt.picked-correct.blink-correct {
+    animation: blinkCorrect 0.5s ease-in-out 6;
+  }
+  @keyframes blinkCorrect {
+    0%, 100% {
+      box-shadow: 0 0 0 5px rgba(34,197,94,0.3), 0 0 60px rgba(34,197,94,0.4);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 0 10px rgba(34,197,94,0.6), 0 0 100px rgba(34,197,94,0.8);
+      transform: scale(1.04);
+    }
+  }
+  .opt.picked-correct .opt-letter {
+    background: var(--success);
+    border-color: #fff;
+    box-shadow: 0 0 0 4px rgba(34,197,94,0.4);
+  }
+  .opt.picked-correct::before {
+    content: '✓';
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    font-size: 48px;
+    color: var(--success);
+    font-weight: 900;
+    text-shadow: 0 0 20px rgba(34,197,94,0.8);
+  }
+  .opt.picked-correct:hover { transform: none; }
+  .opt.picked-correct:hover .opt-letter { background: var(--success); color: white; }
+
+  .opt.dim { opacity: 0.3; filter: grayscale(0.7); pointer-events: none; }
+  .opt.dim:hover { transform: none; }
+  .opt.dim:hover .opt-letter { background: linear-gradient(135deg, #1e3a8a, #1e40af); color: white; }
+
+  .control-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.98), rgba(0,0,0,0.85), transparent);
+    padding: 18px 24px 20px;
+    z-index: 50;
+    backdrop-filter: blur(12px);
+  }
+  .ctrl-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .ctrl-label {
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 8px;
+    white-space: nowrap;
+  }
+  .ctrl-btn {
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ctrl-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  }
+  .ctrl-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .ctrl-btn.blue { background: linear-gradient(135deg, #3b82f6, #1e40af); }
+  .ctrl-btn.green { background: linear-gradient(135deg, #22c55e, #15803d); }
+  .ctrl-btn.red { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+  .ctrl-btn.gold { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #1a1a1a; }
+  .ctrl-btn.purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+
+  .sound-toggle {
+    position: fixed;
+    bottom: 84px;
+    left: 20px;
+    /* Luôn hiện trên MỌI màn: intro(200), panel(180), finish(170), confetti(100) */
+    z-index: 220;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.55);
+    border: 2px solid var(--gold);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: var(--gold);
+    backdrop-filter: blur(8px);
+    transition: all 0.2s;
+  }
+  .sound-toggle:hover {
+    background: rgba(248,192,36,0.25);
+    transform: scale(1.1);
+  }
+
+  .fullscreen-toggle {
+    position: fixed;
+    bottom: 84px;
+    right: 20px;
+    /* Luôn hiện trên MỌI màn: intro(200), panel(180), finish(170), confetti(100) */
+    z-index: 220;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.55);
+    border: 2px solid var(--gold);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: var(--gold);
+    backdrop-filter: blur(8px);
+    transition: all 0.2s;
+  }
+  .fullscreen-toggle:hover {
+    background: rgba(248,192,36,0.25);
+    transform: scale(1.1);
+  }
+
+  .confetti-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .confetti {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ================= MÀN HÌNH GIỚI THIỆU CUỘC THI ================= */
+  .start-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 30%, rgba(46, 4, 12, 0.95), rgba(18, 1, 4, 0.98));
+    backdrop-filter: blur(20px);
+  }
+  .start-overlay.hidden { display: none; }
+  .start-card {
+    background: linear-gradient(135deg, rgba(66, 0, 8, 0.8) 0%, rgba(26, 1, 5, 0.9) 100%);
+    border: 2px solid var(--gold);
+    border-radius: 28px;
+    padding: clamp(8px, 1vh, 14px) clamp(32px, 5vw, 64px) clamp(24px, 3.5vh, 44px);
+    text-align: center;
+    max-width: 980px;
+    width: 92%;
+    box-shadow: 0 0 0 6px rgba(248,192,36,0.18), 0 20px 70px rgba(0,0,0,0.8), inset 0 0 40px rgba(248,192,36,0.08);
+    position: relative;
+    overflow: hidden;
+    animation: cardAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .start-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  @keyframes cardAppear {
+    0% { transform: scale(0.88); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .intro-logo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 0;
+  }
+  .intro-logo {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 20px rgba(0,0,0,0.6)) drop-shadow(0 0 25px rgba(248,192,36,0.25));
+    animation: floatLogo 4s ease-in-out infinite;
+  }
+  @keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .intro-org {
+    color: var(--gold);
+    font-size: clamp(14px, 1.5vw, 17px);
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 0;
+  }
+  /* Divider tách cụm logo+đảng ủy với cụm hội thi */
+  .intro-sep {
+    width: 240px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--gold-border), transparent);
+    margin: 18px auto 20px;
+  }
+  .start-card h1 {
+    font-size: clamp(26px, 3.2vw, 42px);
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffffff 20%, var(--gold) 60%, #ffffff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+    line-height: 1.25;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .intro-tagline {
+    color: var(--gold-light);
+    font-style: italic;
+    font-size: clamp(14px, 1.4vw, 16px);
+    margin-bottom: 0;
+    opacity: 0.9;
+  }
+  /* Divider tách phần chào mừng 78 năm với phần thể lệ */
+  .intro-sep2 {
+    width: 160px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--gold-border), transparent);
+    margin: 20px auto 24px;
+    position: relative;
+  }
+  .intro-sep2::before {
+    content: '✦';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--gold);
+    font-size: 12px;
+    background: rgba(26, 1, 5, 0.9);
+    padding: 0 8px;
+  }
+
+  .intro-rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    text-align: left;
+    margin-bottom: 28px;
+  }
+  .intro-rule-card {
+    background: rgba(0,0,0,0.35);
+    border-left: 3.5px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 12px 16px;
+  }
+  .intro-rule-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .intro-rule-desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .intro-rule-desc b { color: var(--gold); font-weight: 700; }
+  @media (max-width: 700px) {
+    .intro-rules-grid { grid-template-columns: 1fr; }
+  }
+
+  .start-btn-big {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: #120104;
+    border: none;
+    padding: 16px 54px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(248,192,36,0.45);
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .start-btn-big:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(248,192,36,0.65);
+  }
+
+  /* ================= PANEL CHỌN BỘ CÂU HỎI ================= */
+  .set-panel-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 180;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 30%, rgba(46, 4, 12, 0.95), rgba(18, 1, 4, 0.98));
+    backdrop-filter: blur(20px);
+  }
+  .set-panel-overlay.show { display: flex; }
+  .set-panel-card {
+    background: linear-gradient(135deg, rgba(66, 0, 8, 0.8) 0%, rgba(26, 1, 5, 0.9) 100%);
+    border: 2px solid var(--gold);
+    border-radius: 28px;
+    padding: clamp(24px, 3.5vh, 44px) clamp(28px, 4vw, 56px);
+    text-align: center;
+    max-width: 760px;
+    width: 92%;
+    box-shadow: 0 0 0 6px rgba(248,192,36,0.18), 0 20px 70px rgba(0,0,0,0.8);
+    position: relative;
+    animation: cardAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .set-panel-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .set-panel-title {
+    color: var(--gold);
+    font-size: clamp(22px, 2.8vw, 32px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .set-panel-sub {
+    color: rgba(255,255,255,0.8);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .set-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }  .set-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border: 2px solid var(--gold);
+    border-radius: 16px;
+    padding: 18px 8px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 6px 18px rgba(200,16,46,0.4);
+    position: relative;
+  }
+  .set-btn .set-num {
+    font-size: 30px;
+    display: block;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+  }
+  .set-btn:hover:not(:disabled) {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 10px 28px rgba(200,16,46,0.6);
+  }
+  .set-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    filter: grayscale(0.8);
+    transform: none;
+  }
+  .set-btn.done::after {
+    content: '✓ ĐÃ THI';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 9px;
+    background: rgba(34,197,94,0.85);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 800;
+  }
+  .set-btn.current {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(248,192,36,0.4), 0 6px 18px rgba(200,16,46,0.4);
+  }
+  .set-btn.current::before {
+    content: '► ĐANG THI';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 9px;
+    background: rgba(248,192,36,0.9);
+    color: #1a1a1a;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 800;
+  }  .set-btn.rolling {
+    animation: rollFlash 0.3s ease infinite alternate;
+    border-color: var(--gold-light);
+  }
+  @keyframes rollFlash {
+    from { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+    to { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #1a1a1a; }
+  }
+
+  /* Bộ đề thắng cuộc random - phóng to + nhấp nháy 5s */
+  .set-btn.winner {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark)) !important;
+    color: #1a1a1a;
+    border-color: var(--gold-light);
+    z-index: 5;
+    animation: winnerGlow 0.42s ease-in-out 12;
+  }
+  .set-btn.winner .set-num { color: #1a1a1a; }
+  @keyframes winnerGlow {
+    0%, 100% {
+      box-shadow: 0 0 0 4px rgba(248,192,36,0.7), 0 0 50px rgba(248,192,36,0.9);
+      transform: scale(1.14);
+    }
+    50% {
+      box-shadow: 0 0 0 12px rgba(248,192,36,0.25), 0 0 100px rgba(248,192,36,1);
+      transform: scale(1.2);
+    }
+  }
+  .set-panel-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-random {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 900;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+    box-shadow: 0 6px 20px rgba(139,92,246,0.4);
+  }
+  .btn-random:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(139,92,246,0.6);
+  }
+  .btn-random:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .btn-close-panel {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+  }
+  .btn-close-panel:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+
+  .finish-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 170;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 30%, rgba(46, 4, 12, 0.95), rgba(18, 1, 4, 0.98));
+    backdrop-filter: blur(20px);
+  }
+  .finish-overlay.show { display: flex; }
+  /* Canvas pháo hoa nằm sau card */
+  .finish-overlay .fx-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .finish-overlay .start-card {
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (max-width: 1100px) {
+    .options-grid { grid-template-columns: 1fr; }
+    .q-text { font-size: 24px; }
+    .opt-text { font-size: 18px; }
+    .opt-letter { width: 60px; height: 60px; font-size: 30px; }
+    .stage { padding: 16px 24px 200px; }
+    .set-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-height: 800px) {
+    .q-text { font-size: 24px; margin-bottom: 16px; }
+    .opt { padding: 18px 24px; min-height: 100px; }
+    .opt-text { font-size: 18px; }
+    .opt-letter { width: 60px; height: 60px; font-size: 30px; }
+    .q-num { width: 60px; height: 60px; font-size: 26px; }
+    .q-label { font-size: 22px; }
+  }
+  @media (max-height: 650px) {
+    .opt { min-height: 80px; padding: 12px 20px; }
+    .opt-letter { width: 50px; height: 50px; font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-anim" id="bgAnim"></div>
+
+<button class="fullscreen-toggle" id="fullscreenToggle" title="Toàn màn hình (F)">⛶</button>
+<button class="sound-toggle" id="soundToggle">🔊</button>
+
+<!-- Màn hình giới thiệu cuộc thi -->
+<div class="start-overlay" id="startOverlay">
+  <div class="start-card">
+    <div class="intro-logo-wrap">
+      <img src="twd.png" alt="Logo Ngành Kiểm tra Đảng" class="intro-logo">
+      <div class="intro-org">ĐẢNG ỦY XÃ TRIỆU VIỆT VƯƠNG</div>
+    </div>
+
+    <div class="intro-sep"></div>
+
+    <h1>HỘI THI CÁN BỘ KIỂM TRA GIỎI<br>XÃ TRIỆU VIỆT VƯƠNG NĂM 2026</h1>
+    <div class="intro-tagline">"Chào mừng kỷ niệm 78 năm Ngày truyền thống Ngành Kiểm tra Đảng (16/10/1948 - 16/10/2026)"</div>
+
+    <div class="intro-sep2"></div>
+
+    <div class="intro-rules-grid">
+      <div class="intro-rule-card">
+        <div class="intro-rule-title">📌 Cấu trúc bộ đề</div>
+        <div class="intro-rule-desc">Gồm <b>7 câu hỏi trắc nghiệm</b> trọng tâm về Điều lệ, Quy định kiểm tra, giám sát và kỷ luật Đảng.</div>
+      </div>
+      <div class="intro-rule-card">
+        <div class="intro-rule-title">👥 Thể lệ thi đấu</div>
+        <div class="intro-rule-desc">Mỗi lượt thi có <b>2 đội</b> tham gia.</div>
+      </div>
+      <div class="intro-rule-card">
+        <div class="intro-rule-title">🎯 Quy chế trả lời</div>
+        <div class="intro-rule-desc">Chọn <b>1 trong 4</b> phương án A, B, C, D. Sai quá <b>2 lần</b> hệ thống công bố đáp án.</div>
+      </div>
+      <div class="intro-rule-card">
+        <div class="intro-rule-title">🖱️ Điều khiển</div>
+        <div class="intro-rule-desc">Toàn bộ thao tác bằng <b>chuột</b> - bấm trực tiếp vào đáp án trên màn hình.</div>
+      </div>
+    </div>
+
+    <button class="start-btn-big" onclick="startDisplay()">▶ BẮT ĐẦU</button>
+  </div>
+</div>
+
+<!-- Panel chọn bộ câu hỏi -->
+<div class="set-panel-overlay" id="setPanelOverlay">
+  <div class="set-panel-card">
+    <div class="set-panel-title">BỘ CÂU HỎI HỘI THI</div>
+    <div class="set-panel-sub">Mỗi bộ dành cho 2 đội thi • Bộ đã thi không dùng lại</div>
+    <div class="set-grid" id="setGrid"></div>
+    <div class="set-panel-actions">
+      <button class="btn-random" id="btnRandom" onclick="randomPickSet()">🎲 Ngẫu nhiên</button>
+      <button class="btn-close-panel" onclick="closeSetPanel()">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<!-- Stage -->
+<div class="stage" id="stage">
+  <div class="top-bar">
+    <div class="brand">
+      <img src="logo-kiem-tra.png" alt="Logo" class="brand-logo">
+      <div class="brand-text">
+        <div class="org">HỘI THI CÁN BỘ KIỂM TRA GIỎI</div>
+        <div class="title">XÃ TRIỆU VIỆT VƯƠNG NĂM 2026</div>
+      </div>
+    </div>
+    <div class="round-badge">
+      <div class="line1">PHẦN THI KIẾN THỨC</div>
+      <div class="line2" id="setIdBadge">Bộ câu hỏi số 1</div>
+    </div>
+  </div>
+
+  <div class="question-area">
+    <div class="q-counter">
+      <div class="q-num" id="qNum">1</div>
+      <div class="q-label">CÂU HỎI</div>
+    </div>
+
+    <div class="q-text" id="qText">Hãy chọn bộ câu hỏi để bắt đầu</div>
+
+    <div class="options-grid" id="optionsGrid"></div>
+  </div>
+</div>
+
+<!-- Control bar -->
+<div class="control-bar">
+  <div class="ctrl-row">
+    <button class="ctrl-btn blue" onclick="prevQ()">⏮ Câu trước</button>
+    <span class="ctrl-label">Câu <b id="curInfo">1</b>/<b id="totalQ">7</b></span>
+    <button class="ctrl-btn green" id="btnNext" onclick="nextQ()">Câu tiếp ⏭</button>
+    <button class="ctrl-btn purple" onclick="openSetPanel()">📚 Chọn bộ câu hỏi</button>
+    <button class="ctrl-btn red" onclick="finishShow()">🏁 Kết thúc</button>
+  </div>
+</div>
+
+<div class="confetti-layer" id="confettiLayer"></div>
+
+<!-- Finish overlay -->
+<div class="finish-overlay" id="finishOverlay">
+  <div class="start-card">
+    <div class="intro-logo-wrap" style="margin-bottom: 20px;">
+      <img src="twd.png" alt="Logo" class="intro-logo" style="width: 110px; height: 110px;">
+    </div>
+    <div class="intro-org">HOÀN THÀNH PHẦN THI</div>
+    <h1>🏆 CHÚC MỪNG CÁC ĐỘI!</h1>
+    <div class="intro-tagline" style="margin-bottom: 34px;">đã hoàn thành phần thi của mình, mời 2 đội kế tiếp chuẩn bị.</div>
+    <button class="start-btn-big" onclick="openSetPanel()">📚 CHỌN BỘ CÂU HỎI TIẾP THEO</button>
+  </div>
+</div>
+
+<script>
+// ============ DỮ LIỆU CÂU HỎI - 16 BỘ × 7 CÂU (trích từ file chính thức) ============
+// Đáp án đúng = phương án IN ĐẬM trong tài liệu gốc. Thứ tự bộ & ABCD giữ nguyên.
+const QUESTION_SETS = [[{"q":"Hành vi nào sau đây vi phạm quy định về giữ gìn đoàn kết nội bộ?","options":["Tổ chức, xúi giục hoặc tham gia hoạt động bè phái, cục bộ gây mất đoàn kết nội bộ.","Chất vấn tại hội nghị theo đúng quy định.","Góp ý xây dựng với tinh thần trách nhiệm.","Báo cáo cấp ủy về vấn đề có dấu hiệu vi phạm."],"correct":0},{"q":"Thời hiệu kỷ luật đối với đảng viên vi phạm đến mức phải kỷ luật bằng hình thức khiển trách là bao nhiêu?","options":["2 năm.","5 năm.","10 năm.","Không quy định thời hiệu."],"correct":1},{"q":"Kết luận giải quyết tố cáo được thông báo cho người tố cáo bằng hình thức nào?","options":["Chỉ được thông báo bằng văn bản mật.","Bằng hình thức thích hợp.","Chỉ công bố tại hội nghị toàn thể đảng viên.","Không được thông báo cho người tố cáo."],"correct":1},{"q":"Thời hiệu kỷ luật đối với đảng viên có vi phạm đến mức phải áp dụng hình thức cảnh cáo hoặc cách chức là bao lâu?","options":["05 năm.","07 năm.","10 năm.","15 năm."],"correct":2},{"q":"Tổ chức đảng nào sau đây có thẩm quyền thi hành kỷ luật tổ chức đảng cấp dưới?","options":["Ban Thường vụ Đảng ủy cơ sở.","Ban Chấp hành đảng bộ cơ sở.","Ban Chấp hành đảng bộ tỉnh.","Cả 3 phương án trên."],"correct":3},{"q":"Ủy ban kiểm tra cấp trên có quyền kiểm tra lại kết luận kiểm tra của tổ chức đảng cấp dưới về công tác kiểm tra, giám sát và kỷ luật của Đảng hay không?","options":["Không có quyền vì phải tôn trọng kết luận của cấp dưới.","Có quyền kiểm tra lại kết luận kiểm tra của tổ chức đảng cấp dưới.","Chỉ được kiểm tra lại khi có đơn khiếu nại của đối tượng.","Phải xin phép thường trực cấp ủy cùng cấp trước khi kiểm tra lại."],"correct":1},{"q":"Chi bộ thực hiện giám sát đảng viên bằng những hình thức nào?","options":["Chỉ giám sát thường xuyên.","Chỉ giám sát chuyên đề.","Giám sát thường xuyên và giám sát chuyên đề.","Chỉ giám sát thông qua đơn tố cáo."],"correct":2}],[{"q":"Nguồn thông tin nào sau đây có thể được sử dụng để phát hiện dấu hiệu vi phạm?","options":["Phản ánh của phương tiện thông tin đại chúng đã được kiểm chứng.","Tin đồn chưa xác định nguồn và chưa được kiểm chứng.","Ý kiến truyền miệng không có căn cứ.","Nội dung giả mạo trên mạng xã hội."],"correct":0},{"q":"Khi sử dụng mạng xã hội, nền tảng số hoặc trí tuệ nhân tạo, đảng viên không được thực hiện hành vi nào?","options":["Chia sẻ thông tin chính thức từ cơ quan có thẩm quyền.","Tra cứu văn bản phục vụ nhiệm vụ được giao.","Tạo lập, phát tán thông tin sai sự thật.","Tuyên truyền gương người tốt, việc tốt."],"correct":2},{"q":"Trong quá trình kiểm tra, giám sát và thi hành kỷ luật đảng, hành vi nào sau đây là hành vi đảng viên không được làm?","options":["Cung cấp hồ sơ, tài liệu theo yêu cầu của đoàn kiểm tra.","Giải trình trung thực những vấn đề có liên quan.","Cản trở, can thiệp hoặc tác động để làm sai lệch, bao che, giảm trách nhiệm và mức xử lý.","Chấp hành kết luận, quyết định của cơ quan có thẩm quyền."],"correct":2},{"q":"Đảng viên kê khai tài sản, giải trình biến động tài sản, nguồn gốc tài sản, thu nhập không trung thực, gây hậu quả nghiêm trọng thì bị kỷ luật thế nào?","options":["Khiển trách.","Cảnh cáo hoặc cách chức nếu có chức vụ.","Chỉ yêu cầu kê khai lại.","Không xử lý nếu tài sản hợp pháp."],"correct":1},{"q":"Mục đích quan trọng nhất của công tác giám sát là:","options":["Phát hiện vi phạm để xử lý.","Phòng ngừa, ngăn chặn vi phạm từ sớm, từ xa.","Đánh giá cán bộ.","Xếp loại đảng viên."],"correct":1},{"q":"Trong kiểm tra khi có dấu hiệu vi phạm, khi nào có thể thực hiện đồng thời quy trình kiểm tra và quy trình thi hành kỷ luật (quy trình kép)?","options":["Khi có bất kỳ ý kiến phản ánh nào về đảng viên.","Khi vi phạm đã rõ, đến mức phải kỷ luật và đảng viên tự giác kiểm điểm, tự nhận hình thức kỷ luật tương xứng.","Khi tổ kiểm tra chưa thu thập được tài liệu.","Khi đảng viên không tham dự hội nghị tổ đảng."],"correct":1},{"q":"Khi xem xét, xử lý kỷ luật đảng viên, nguyên tắc nào sau đây là đúng?","options":["Xử lý theo dư luận xã hội.","Công minh, chính xác, kịp thời.","Chỉ căn cứ vào kết luận của cơ quan điều tra.","Ưu tiên xử lý người giữ chức vụ."],"correct":1}],[{"q":"Căn cứ nào sau đây có thể được sử dụng để đề xuất chi bộ kiểm tra đảng viên khi có dấu hiệu vi phạm?","options":["Chỉ khi có đơn tố cáo đã được cơ quan nhà nước kết luận.","Kết quả kiểm tra, giám sát, nắm tình hình hoặc nhiệm vụ cấp trên giao.","Chỉ khi đảng viên tự nhận có vi phạm.","Chỉ khi có yêu cầu của cơ quan công an."],"correct":1},{"q":"Hành vi nào sau đây bị cấm đối với đảng viên có trách nhiệm theo dõi, quản lý một ngành, lĩnh vực, địa phương hoặc địa bàn?","options":["Đi học theo quyết định và kinh phí hợp pháp của cơ quan.","Đi chữa bệnh bằng nguồn bảo hiểm hoặc nguồn hợp pháp của cá nhân.","Can thiệp để bản thân hoặc người thân đi du lịch, học tập, chữa bệnh bằng nguồn tài trợ của tổ chức, cá nhân có liên quan đến lĩnh vực mình quản lý.","Thực hiện chế độ công tác phí theo quy định."],"correct":2},{"q":"Theo Quy định của Bộ Chính trị về kỷ luật tổ chức đảng, đảng viên vi phạm, tổ chức đảng thực hiện không đầy đủ chủ trương, quy định của Đảng, gây hậu quả ít nghiêm trọng thì bị xử lý kỷ luật bằng hình thức nào?","options":["Khiển trách.","Cảnh cáo.","Kiểm điểm rút kinh nghiệm.","Giải tán."],"correct":0},{"q":"Đối tượng giám sát của Ủy ban kiểm tra gồm?","options":["Các tổ chức đảng cấp dưới trực tiếp.","Chỉ đảng viên không giữ chức vụ.","Các tổ chức đảng cấp dưới; cấp ủy viên cùng cấp, cán bộ thuộc diện cấp ủy cùng cấp quản lý.","Cán bộ thuộc cơ quan chính quyền."],"correct":2},{"q":"Sau bao lâu kể từ ngày công bố quyết định kỷ luật (không phải khai trừ hoặc giải tán), nếu không tái phạm thì quyết định kỷ luật đương nhiên chấm dứt hiệu lực?","options":["06 tháng.","12 tháng.","24 tháng.","36 tháng."],"correct":1},{"q":"Tổ chức đảng không có biện pháp ngăn chặn, xử lý người tố cáo bị đe dọa, vu khống hoặc trả thù, gây hậu quả nghiêm trọng thì bị kỷ luật bằng hình thức nào?","options":["Khiển trách.","Cảnh cáo.","Giải tán.","Không xử lý vì thuộc trách nhiệm cá nhân."],"correct":1},{"q":"Khi đảng viên bị khởi tố, truy tố hoặc cơ quan điều tra, viện kiểm sát, thanh tra, kiểm toán nhà nước cung cấp nội dung liên quan đến dấu hiệu vi phạm pháp luật, tổ chức đảng có thẩm quyền phải làm gì?","options":["Chờ tòa án tuyên án xong mới xử lý kỷ luật Đảng.","Cách chức tất cả các chức vụ trong Đảng ngay lập tức.","Chủ động, kịp thời kiểm tra, kết luận và xem xét, xử lý kỷ luật nếu có vi phạm đến mức phải xử lý, không chờ kết luận hoặc tuyên án của tòa án.","Xóa tên khỏi danh sách đảng viên."],"correct":2}],[{"q":"Quyết định kỷ luật đối với tổ chức đảng và đảng viên do tổ chức đảng có thẩm quyền ban hành (trừ quyết định kỷ luật thuộc thẩm quyền của chi bộ) có hiệu lực từ khi nào?","options":["Kể từ ngày ký quyết định.","Sau 10 ngày kể từ ngày công bố quyết định.","Sau 15 ngày kể từ ngày công bố quyết định.","Sau một tháng kể từ ngày công bố quyết định."],"correct":0},{"q":"Yêu cầu nào sau đây phải được bảo đảm trong giải quyết tố cáo của Đảng?","options":["Giữ bí mật thông tin về người tố cáo và có biện pháp bảo vệ người tố cáo theo quy định.","Bắt buộc gặp trực tiếp người tố cáo để đối chất.","Công khai danh tính người bị tố cáo trên phương tiện thông tin đại chúng.","Yêu cầu người bị tố cáo tự nhận hình thức kỷ luật trước khi giải quyết."],"correct":0},{"q":"Không giải quyết những trường hợp khiếu nại kỷ luật Đảng nào sau đây?","options":["Quá thời hạn khiếu nại theo quy định; Từ chối nhận quyết định kỷ luật hoặc quyết định giải quyết khiếu nại kỷ luật đảng;","Đang được cấp trên có thẩm quyền giải quyết;","Đã được cấp có thẩm quyền cao nhất xem xét, kết luận, quyết định;","Cả 3 đáp án A, B, C."],"correct":3},{"q":"Mục đích của thi hành kỷ luật Đảng là:","options":["Trừng phạt là chính.","Giáo dục, phòng ngừa, giữ nghiêm kỷ luật của Đảng.","Hạ uy tín cán bộ.","Phục vụ công tác nhân sự."],"correct":1},{"q":"Đối với vụ việc tố cáo phức tạp, chi bộ có thể gia hạn giải quyết tố cáo tối đa bao nhiêu ngày làm việc?","options":["10 ngày làm việc.","15 ngày làm việc.","20 ngày làm việc.","30 ngày làm việc."],"correct":3},{"q":"Người đứng đầu thiếu kiểm tra, không phát hiện và ngăn chặn kịp thời vi phạm trong cơ quan, đơn vị, để xảy ra hậu quả nghiêm trọng thì bị kỷ luật thế nào?","options":["Khiển trách.","Cảnh cáo hoặc cách chức nếu có chức vụ.","Khai trừ trong mọi trường hợp.","Không xử lý nếu không trực tiếp vi phạm."],"correct":1},{"q":"Nội dung nào sau đây thuộc phạm vi chi bộ giải quyết tố cáo đối với đảng viên?","options":["Việc thực hiện nhiệm vụ do chi bộ giao.","Việc thực hiện nhiệm vụ đảng viên.","Phẩm chất chính trị, tư tưởng, đạo đức, lối sống.","Cả 3 phương án trên."],"correct":3}],[{"q":"Trong quản lý và sử dụng tài liệu, hành vi nào sau đây là hành vi đảng viên không được làm?","options":["Cung cấp tài liệu mật cho người không có thẩm quyền.","Lưu trữ tài liệu theo chế độ bảo mật của cơ quan.","Báo cáo tài liệu mật theo đúng thẩm quyền.","Giao nhận tài liệu có ký nhận theo quy định."],"correct":0},{"q":"Khi xem xét kỷ luật, tổ chức đảng có thẩm quyền phải căn cứ vào nhóm yếu tố nào sau đây?","options":["Chỉ căn cứ vào chức vụ của người vi phạm.","Chỉ căn cứ vào thiệt hại vật chất đã xảy ra.","Nội dung, động cơ, tính chất, mức độ, hậu quả, nguyên nhân vi phạm, hoàn cảnh cụ thể, các tình tiết tăng nặng, giảm nhẹ.","Chủ yếu căn cứ vào dư luận xã hội."],"correct":2},{"q":"Kế hoạch kiểm tra thực hiện nhiệm vụ đảng viên của chi bộ được xác định thời gian kiểm tra và thời gian gia hạn tối đa như thế nào?","options":["Không quá 30 ngày, được gia hạn không quá 10 ngày.","Không quá 45 ngày, được gia hạn không quá 15 ngày.","Không quá 60 ngày, được gia hạn không quá 30 ngày.","Không quá 90 ngày, được gia hạn không quá 30 ngày."],"correct":1},{"q":"Quyết định kỷ luật khiển trách, cảnh cáo hoặc cách chức được thông qua khi có tỷ lệ nào?","options":["Ít nhất một phần ba số người có quyền biểu quyết tán thành.","Quá một phần hai số thành viên của tổ chức đảng có thẩm quyền tán thành.","Ít nhất hai phần ba số người dự họp tán thành.","Tất cả người dự họp tán thành."],"correct":1},{"q":"Nếu qua giám sát chuyên đề, chi bộ kết luận đảng viên được giám sát có dấu hiệu vi phạm thì chi bộ phải làm gì?","options":["Quyết định tiến hành kiểm tra khi có dấu hiệu vi phạm.","Tự động quyết định hình thức cảnh cáo.","Chuyển hồ sơ cho công an xã.","Kết thúc vụ việc và chỉ lưu hồ sơ."],"correct":0},{"q":"Trường hợp nào sau đây phải đình chỉ sinh hoạt đảng của đảng viên?","options":["Đảng viên bị cơ quan pháp luật có thẩm quyền ra quyết định khởi tố hoặc truy tố.","Đảng viên vi phạm nguyên tắc tổ chức, sinh hoạt đảng","Đảng viên từ chối kiểm điểm trước tổ chức đảng có thẩm quyền.","Đảng viên chậm thực hiện một nhiệm vụ được giao."],"correct":0},{"q":"Nói về đoàn kết trong tác phẩm “Di chúc” (năm 1969) Chủ tịch Hồ Chí Minh căn dặn như thế nào?","options":["Các đồng chí cần phải đoàn kết, nhất trí, giữ gìn sự đoàn kết nhất trí của Đảng như giữ gìn con ngươi của mắt mình.","Các chi bộ cần phải trong sạch, vững mạnh; đoàn kết, nhất trí, giữ gìn sự đoàn kết nhất trí của Đảng như giữ gìn con ngươi của mắt mình.","Các chi bộ cần phải đoàn kết, thống nhất, giữ gìn sự đoàn kết nhất trí của Đảng như giữ gìn con ngươi của mắt mình.","Các đồng chí từ Trung ương đến các chi bộ cần phải giữ gìn sự đoàn kết nhất trí của Đảng như giữ gìn con ngươi của mắt mình."],"correct":3}],[{"q":"Nhiệm vụ cơ bản của chi bộ trong công tác kiểm tra, giám sát là gì?","options":["Chỉ thực hiện kiểm tra tài chính đảng.","Xây dựng kế hoạch và tiến hành kiểm tra, giám sát đảng viên trong chi bộ thực hiện nhiệm vụ đảng viên.","Chỉ kiểm tra đảng viên khi có yêu cầu bằng văn bản của cấp trên.","Giám sát các tổ chức đảng cấp trên trực tiếp."],"correct":1},{"q":"Trong hoạt động tố cáo, trường hợp nào sau đây là hành vi đảng viên không được làm?","options":["Gửi đơn tố cáo có họ tên, địa chỉ rõ ràng đến cơ quan có thẩm quyền.","Cung cấp tài liệu, chứng cứ theo yêu cầu của cơ quan giải quyết.","Chịu trách nhiệm về nội dung tố cáo của mình.","Viết đơn tố cáo giấu tên, mạo tên hoặc có nội dung bịa đặt."],"correct":3},{"q":"Đảng viên tố cáo có nội dung bịa đặt, đả kích gây tổn hại uy tín, danh dự, nhân phẩm của tổ chức, cá nhân, gây hậu quả nghiêm trọng thì bị kỷ luật thế nào?","options":["Khiển trách.","Cảnh cáo hoặc cách chức nếu có chức vụ.","Không xử lý vì tố cáo là quyền của đảng viên.","Chỉ yêu cầu xin lỗi."],"correct":1},{"q":"Khi chi bộ tiến hành kiểm tra đối với đảng viên? Ai là người ký ban hành quyết định kiểm tra?","options":["Tổ trưởng tổ kiểm tra.","Đảng viên phụ trách công tác kiểm tra, giám sát.","Bí thư hoặc phó bí thư chi bộ.","Đại diện cấp ủy cấp trên trực tiếp."],"correct":2},{"q":"Việc kiểm tra khi có dấu hiệu vi phạm được thực hiện khi:","options":["Chỉ khi có đơn tố cáo.","Chỉ khi có kết luận của cơ quan điều tra.","Có căn cứ xác định có dấu hiệu vi phạm theo quy định.","Sau khi có bản án có hiệu lực."],"correct":2},{"q":"Ủy ban kiểm tra từ cấp xã và tương đương trở lên có thẩm quyền nào sau đây đối với quyết định kỷ luật của tổ chức đảng cấp dưới?","options":["Không có quyền xem xét lại.","Chuẩn y, thay đổi hoặc xóa bỏ hình thức kỷ luật nếu quyết định của cấp dưới không đúng.","Chỉ yêu cầu cấp dưới tự sửa, không được thay đổi hoặc xóa bỏ.","Chỉ báo cáo ban thường vụ cấp mình, không được thực hiện thẩm quyền."],"correct":1},{"q":"Đảng viên vi phạm kỷ luật Đảng trong các thời gian nào sau đây thì phải xem xét, xử lý kỷ luật?","options":["Đảng viên đang trong thời gian dự bị.","Đảng viên đang trong thời gian mang thai, nghỉ thai sản.","Đảng viên mắc bệnh hiểm nghèo hoặc đang mất khả năng nhận thức.","Bị ốm điều trị nội trú tại bệnh viện được cơ quan y tế có thẩm quyền xác nhận."],"correct":0}],[{"q":"Quyết định khiển trách hoặc cảnh cáo đối với đảng viên thuộc thẩm quyền của chi bộ có hiệu lực từ thời điểm nào?","options":["Sau 05 ngày kể từ ngày ký.","Sau khi cấp ủy cấp trên chuẩn y.","Ngay sau khi chi bộ công bố kết quả biểu quyết quyết định kỷ luật.","Sau khi đảng viên bị kỷ luật ký nhận quyết định."],"correct":2},{"q":"Sau khi xem xét, xử lý hoặc chỉ đạo việc xem xét, xử lý kỷ luật đảng, chậm nhất bao nhiêu ngày tổ chức đảng phải chỉ đạo hoặc đề nghị tổ chức có trách nhiệm xem xét, xử lý kỷ luật về hành chính, đoàn thể hoặc xử lý hình sự cho đồng bộ, kịp thời?","options":["5 ngày.","15 ngày.","20 ngày.","30 ngày."],"correct":0},{"q":"Nội dung nào sau đây được coi là không vi phạm những điều đảng viên không được làm:","options":["Phát ngôn có nội dung trái với nghị quyết, chỉ thị, quy định, quyết định, quy chế, kết luận của Đảng và pháp luật của Nhà nước.","Phát biểu, nêu ý kiến tại cuộc hội thảo khoa học, hội nghị được cơ quan có thẩm quyền tổ chức.","Làm những việc pháp luật không cấm nhưng ảnh hưởng đến uy tín của Đảng.","Đăng những thông tin thuộc danh mục bí mật của Đảng và Nhà nước do cơ quan, tổ chức có thẩm quyền ban hành."],"correct":1},{"q":"Đảng viên bị người khác xúi giục, lôi kéo, mua chuộc để nói, viết, lưu trữ hoặc phát tán nội dung trái chủ trương, quy định của Đảng, gây hậu quả ít nghiêm trọng thì bị kỷ luật thế nào?","options":["Khiển trách.","Cảnh cáo.","Cách chức trong mọi trường hợp.","Khai trừ."],"correct":0},{"q":"Nội dung nào sau đây thuộc hành vi đảng viên không được làm trong kê khai hồ sơ, tài sản và sử dụng văn bằng?","options":["Kê khai trung thực lý lịch, tài sản và thu nhập.","Giải trình đầy đủ nguồn gốc tài sản, thu nhập biến động.","Bổ sung hồ sơ theo yêu cầu của tổ chức có thẩm quyền.","Kê khai không trung thực hoặc sử dụng văn bằng, chứng chỉ không hợp pháp."],"correct":3},{"q":"Việc khiếu nại kỷ luật Đảng được giải quyết theo:","options":["Pháp luật tố tụng dân sự.","Quy định của Đảng về kiểm tra, giám sát và thi hành kỷ luật.","Luật Khiếu nại.","Luật Tố cáo."],"correct":1},{"q":"Hành vi nào sau đây là tình tiết tăng nặng mức kỷ luật đối với đảng viên?","options":["Tự giác giao nộp tài liệu liên quan.","Chủ động khắc phục hậu quả.","Đối phó, quanh co, cản trở quá trình kiểm tra, giám sát, thanh tra, kiểm toán, điều tra.","Thành khẩn nhận trách nhiệm."],"correct":2}],[{"q":"Sau kiểm tra thực hiện nhiệm vụ đảng viên, nếu chi bộ kết luận đảng viên có dấu hiệu vi phạm thì phải thực hiện bước tiếp theo thế nào?","options":["Chuyển ngay hồ sơ sang cơ quan nhà nước.","Tiến hành kiểm tra khi có dấu hiệu vi phạm đối với đảng viên.","Bỏ phiếu kỷ luật ngay tại hội nghị.","Chỉ yêu cầu đảng viên rút kinh nghiệm."],"correct":1},{"q":"Những nội dung nào dưới đây thuộc nội dung chi bộ kiểm tra đảng viên?","options":["Kiểm tra việc thực hiện nghị quyết của chi bộ.","Kiểm tra việc thực hiện nhiệm vụ do chi bộ phân công.","Kiểm tra việc thực hiện quy định về những điều đảng viên không được làm.","Tất cả các ý trên."],"correct":3},{"q":"Điều lệ Đảng hiện hành quy định chi bộ xem xét, đề nghị cấp có thẩm quyền xóa tên trong danh sách đảng viên đối với đảng viên bỏ sinh hoạt chi bộ hoặc không đóng đảng phí mà không có lý do chính đáng trong thời gian bao lâu?","options":["3 tháng trong năm.","6 tháng trong năm.","9 tháng trong năm.","12 tháng trong năm."],"correct":0},{"q":"Thời hạn đình chỉ sinh hoạt đảng đối với đảng viên (kể cả cấp ủy viên), đình chỉ hoạt động của tổ chức đảng theo quy định chung là bao nhiêu ngày?","options":["30 ngày.","60 ngày.","90 ngày.","120 ngày."],"correct":2},{"q":"Trường hợp nào sau đây không áp dụng thời hiệu kỷ luật đối với đảng viên?","options":["Vi phạm đến mức khiển trách về chế độ báo cáo.","Vi phạm đến mức cảnh cáo về sinh hoạt chi bộ.","Vi phạm đến mức khai trừ hoặc sử dụng văn bằng, chứng chỉ, chứng nhận không hợp pháp.","Vi phạm lần đầu, hậu quả ít nghiêm trọng."],"correct":2},{"q":"Các hình thức kỷ luật đối với đảng viên chính thức gồm những hình thức nào?","options":["Khiển trách, cảnh cáo, cách chức (nếu có chức vụ), khai trừ.","Phê bình, khiển trách, cảnh cáo, khai trừ.","Khiển trách, đình chỉ sinh hoạt, khai trừ.","Cảnh cáo, cách chức, giải tán."],"correct":0},{"q":"Hành vi nào sau đây bị cấm trong việc chuyển tiền, tài sản và giao dịch ở nước ngoài?","options":["Thực hiện giao dịch hợp pháp và kê khai theo quy định.","Chuyển tiền, tài sản ra nước ngoài hoặc mở tài khoản ở nước ngoài trái quy định.","Báo cáo cơ quan có thẩm quyền về tài khoản ở nước ngoài.","Thực hiện nghĩa vụ thuế đối với tài sản ở nước ngoài."],"correct":1}],[{"q":"Ủy ban kiểm tra làm việc theo nguyên tắc nào?","options":["Cá nhân chủ nhiệm quyết định toàn bộ công việc.","Tập trung dân chủ, làm việc theo chế độ tập thể, quyết định theo đa số.","Chỉ thực hiện theo biểu quyết của cấp ủy cấp dưới.","Làm việc theo chế độ thủ trưởng tuyệt đối."],"correct":1},{"q":"Khi nhận được đơn tố cáo đảng viên, công việc nào phải được thực hiện trong bước chuẩn bị?","options":["Công khai ngay nội dung tố cáo tại hội nghị chi bộ.","Phân loại, nắm tình hình đơn; làm việc với người tố cáo để xác định danh tính, địa chỉ và nội dung tố cáo, có lập biên bản.","Bỏ phiếu kỷ luật người bị tố cáo.","Chuyển toàn bộ đơn cho cơ quan công an mà không cần xem xét."],"correct":1},{"q":"Đảng viên có quyền gì trong quá trình xem xét, thi hành kỷ luật đối với mình?","options":["Không được trình bày ý kiến.","Được trình bày ý kiến, tự kiểm điểm và bảo lưu ý kiến theo quy định của Đảng.","Chỉ được gửi đơn sau khi có quyết định kỷ luật.","Không được khiếu nại."],"correct":1},{"q":"Đảng viên tiếp nhận hoặc sử dụng tiền, tài sản tài trợ, nhân đạo, từ thiện không đúng mục đích, gây hậu quả nghiêm trọng thì bị kỷ luật thế nào?","options":["Khiển trách.","Cảnh cáo hoặc cách chức nếu có chức vụ.","Chỉ hoàn trả tiền.","Không xử lý nếu quỹ do cá nhân thành lập."],"correct":1},{"q":"Điều lệ Đảng hiện hành quy định hình thức kỷ luật đối với đảng viên dự bị là?","options":["Khiển trách, cảnh cáo.","Khiển trách, cảnh cáo, xóa tên.","Khiển trách, cảnh cáo, khai trừ.","Khiển trách, cảnh cáo, cách chức."],"correct":0},{"q":"Một đảng viên để xảy ra thất thoát, lãng phí trong quản lý, sử dụng tài chính, tài sản công do không thực hành tiết kiệm. Hành vi này thuộc điều nào của Quy định số 207-QĐ/TW về những điều đảng viên không được làm?","options":["Điều 13.","Điều 14.","Điều 15.","Điều 16."],"correct":2},{"q":"Các hình thức kỷ luật đối với tổ chức đảng gồm những hình thức nào?","options":["Khiển trách, cảnh cáo, cách chức.","Khiển trách, cảnh cáo, giải tán.","Phê bình, khiển trách, cảnh cáo.","Cảnh cáo, đình chỉ, giải thể."],"correct":1}],[{"q":"Tổ chức đảng không lãnh đạo, chỉ đạo, đôn đốc việc kê khai, công khai tài sản, thu nhập của cán bộ, đảng viên theo quy định, gây hậu quả ít nghiêm trọng và vi phạm lần đầu thì bị kỷ luật thế nào?","options":["Khiển trách.","Cảnh cáo.","Giải tán.","Không thuộc trách nhiệm tổ chức đảng."],"correct":0},{"q":"Đảng viên vi phạm đang trong thời gian mang thai, nghỉ thai sản, đang nuôi con nhỏ dưới 12 tháng tuổi hoặc đảng viên là nam giới (trong trường hợp vợ chết hoặc vì lý do khách quan, bất khả kháng khác) đang nuôi con dưới 12 tháng tuổi; đảng viên bị bệnh nặng thì:","options":["Xem xét, xử lý kỷ luật.","Không xem xét, xử lý kỷ luật.","Chưa xem xét, xử lý kỷ luật.","Cả 3 phương án đã nêu."],"correct":2},{"q":"Việc biểu quyết quyết định hình thức kỷ luật cụ thể phải được tiến hành bằng hình thức nào?","options":["Giơ tay công khai.","Bỏ phiếu kín.","Xin ý kiến bằng điện thoại.","Biểu quyết miệng."],"correct":1},{"q":"Đồng chí Phó Chủ nhiệm ủy ban kiểm tra cấp ủy cùng cấp do cơ quan nào bầu cử?","options":["Cấp ủy cùng cấp.","Ủy ban kiểm tra cấp dưới.","Ủy ban kiểm tra cùng cấp.","Ủy ban kiểm tra cấp trên trực tiếp."],"correct":2},{"q":"Hành vi nào sau đây vi phạm quy định về công tác cán bộ?","options":["Nhận xét cán bộ khách quan, đúng tiêu chuẩn và quy trình.","Báo cáo cấp ủy khi phát hiện hồ sơ nhân sự không bảo đảm.","Can thiệp để người thân được tuyển dụng, quy hoạch, bổ nhiệm hoặc bố trí công việc.","Đề xuất nhân sự có đủ phẩm chất, năng lực và uy tín."],"correct":2},{"q":"Nguyên tắc nào sau đây đúng khi xem xét kỷ luật đảng?","options":["Cán bộ giữ chức vụ cao được ưu tiên xem xét giảm nhẹ.","Tổ chức đảng và đảng viên đều bình đẳng trước kỷ luật của Đảng.","Chỉ xử lý khi vi phạm gây thiệt hại vật chất.","Có thể trì hoãn xử lý đến cuối nhiệm kỳ."],"correct":1},{"q":"Công tác kiểm tra, giám sát của Đảng phải thực hiện theo phương châm nào sau đây?","options":["Giám sát phải rộng rãi, kiểm tra phải có trọng tâm, trọng điểm.","Giám sát phải thường xuyên, kiểm tra phải chặt chẽ.","Giám sát phải mở rộng, kiểm tra có trọng tâm, trọng điểm.","Giám sát phải toàn diện, kiểm tra phải nghiêm minh."],"correct":2}],[{"q":"Để quyết định khai trừ đảng viên, tỷ lệ biểu quyết tán thành tối thiểu là bao nhiêu?","options":["Quá một phần ba số thành viên.","Quá một phần hai số thành viên.","Ít nhất hai phần ba số đảng viên chính thức hoặc thành viên của tổ chức đảng đó nhất trí đề nghị và được sự nhất trí của trên một nửa số thành viên tổ chức đảng cấp trên có thẩm quyền quyết định.","Một trăm phần trăm số thành viên dự họp."],"correct":2},{"q":"Phương thức nào sau đây phù hợp để thực hiện giám sát thường xuyên đối với đảng viên?","options":["Thông qua sinh hoạt đảng, gặp gỡ trực tiếp, báo cáo công tác và các nguồn thông tin theo quy định.","Chỉ theo dõi tài khoản mạng xã hội cá nhân của đảng viên.","Thuê tổ chức, cá nhân theo dõi bí mật đời tư của đảng viên.","Chỉ sử dụng hòm thư góp ý tại cơ quan."],"correct":0},{"q":"Một đảng viên tự ý ứng cử vào một chức danh của tổ chức chính trị - xã hội khi chưa được tổ chức đảng có thẩm quyền cho phép. Hành vi này thuộc trường hợp nào?","options":["Được phép nếu có đủ tiêu chuẩn chuyên môn.","Chỉ cần báo cáo sau khi trúng cử.","Không vi phạm nếu được đa số hội viên đồng ý.","Là hành vi đảng viên không được làm."],"correct":3},{"q":"Mốc thời gian để tính thời hạn tiến hành một cuộc kiểm tra, giám sát của tổ chức đảng được quy định như thế nào?","options":["Tính theo ngày làm việc.","Tính theo ngày liên tục (kể cả ngày nghỉ).","Tính theo tháng.","Do Trưởng đoàn kiểm tra tự quyết định."],"correct":0},{"q":"Đảng viên sử dụng văn bằng, chứng chỉ, chứng nhận không hợp pháp để hợp thức hóa hồ sơ tuyển dụng, ứng cử hoặc bổ nhiệm, gây hậu quả nghiêm trọng thì bị kỷ luật thế nào?","options":["Khiển trách.","Cảnh cáo hoặc cách chức nếu có chức vụ.","Chỉ hủy văn bằng, không kỷ luật.","Không xử lý nếu có năng lực thực tế."],"correct":1},{"q":"Kể từ ngày nhận được đơn thư tố cáo đối với đảng viên, chi bộ phải xem xét giải quyết trong thời hạn bao lâu?","options":["Chậm nhất 30 ngày làm việc.","Chậm nhất 60 ngày làm việc.","Chậm nhất 90 ngày làm việc.","Chậm nhất 120 ngày làm việc."],"correct":1},{"q":"Đảng viên đã chuyển công tác, nghỉ việc hoặc nghỉ hưu thì trách nhiệm đối với vi phạm đã thực hiện trước đó được xác định thế nào?","options":["Đương nhiên chấm dứt trách nhiệm kỷ luật.","Chỉ kiểm điểm nhưng không được kỷ luật.","Vẫn bị xem xét, xử lý kỷ luật theo quy định.","Chỉ xử lý nếu tự nguyện nhận trách nhiệm."],"correct":2}],[{"q":"Đối tượng kiểm tra tài chính của Ủy ban kiểm tra gồm đối tượng nào sau đây?","options":["Cấp ủy cấp dưới và cơ quan tài chính cấp ủy cùng cấp.","Chỉ các doanh nghiệp tư nhân trên địa bàn.","Chỉ cơ quan thuế cấp huyện.","Chỉ tổ chức chính trị - xã hội không có tổ chức đảng."],"correct":0},{"q":"Đảng viên bị hình phạt từ cải tạo không giam giữ trở lên, phải xử lý kỷ luật Đảng ở hình thức nào?","options":["Khiển trách.","Cảnh cáo.","Cách chức.","Khai trừ."],"correct":3},{"q":"Việc thi hành kỷ luật đảng phải do chủ thể nào quyết định?","options":["Bất kỳ tổ chức đảng nào phát hiện vi phạm.","Cơ quan chính quyền cùng cấp.","Tổ chức đảng có thẩm quyền.","Người đứng đầu cơ quan nơi đảng viên công tác."],"correct":2},{"q":"Tình tiết nào sau đây được xem xét giảm nhẹ mức kỷ luật đối với tổ chức đảng?","options":["Cố tình trì hoãn việc cung cấp tài liệu.","Chủ động chấm dứt hành vi vi phạm và khắc phục cơ bản, kịp thời hậu quả do vi phạm của tổ chức mình gây ra trước và trong quá trình kiểm tra, giám sát.","Tác động người làm chứng thay đổi lời khai.","Lợi dụng tình trạng khẩn cấp để vi phạm."],"correct":1},{"q":"Khi nhận được đơn tố cáo giấu tên, mạo tên nhưng nêu rõ địa chỉ, đối tượng và nội dung tố cáo thì tổ chức đảng có thẩm quyền xử lý như thế nào?","options":["Không xem xét và hủy đơn ngay.","Giải quyết như đơn tố cáo chính danh.","Phối hợp với cơ quan công an tìm người viết đơn rồi mới giải quyết.","Nắm tình hình để làm cơ sở kiểm tra, giám sát đối với tổ chức đảng, đảng viên bị tố cáo."],"correct":3},{"q":"Theo Quy định số 207-QĐ/TW, hành vi nào sau đây là hành vi đảng viên không được làm?","options":["Nói, viết và làm đúng chủ trương, quy định của Đảng, pháp luật của Nhà nước.","Chủ động đề xuất giải pháp đổi mới vì lợi ích chung.","Nói, viết, làm trái hoặc không thực hiện chủ trương, quy định của Đảng, pháp luật của Nhà nước.","Phản ánh khó khăn, vướng mắc với tổ chức đảng có thẩm quyền."],"correct":2},{"q":"Hình thức nào dưới đây không thuộc hình thức kỷ luật đảng viên chính thức?","options":["Khiển trách.","Cảnh cáo.","Khai trừ.","Xóa tên trong danh sách đảng viên."],"correct":3}],[{"q":"Trong giám sát chuyên đề đối với đảng viên, mốc thời gian giám sát và thời gian thực hiện tối đa được quy định đối với chi bộ như thế nào?","options":["Mốc không quá 03 năm gần nhất; thời gian không quá 30 ngày.","Mốc không quá 05 năm gần nhất; thời gian không quá 45 ngày.","Mốc không quá 10 năm gần nhất; thời gian không quá 60 ngày.","Không giới hạn mốc thời gian; thời gian không quá 90 ngày."],"correct":0},{"q":"Theo Quy định của Bộ Chính trị về kỷ luật tổ chức đảng, đảng viên vi phạm, đảng viên vi phạm trường hợp nào sau đây thì bị thi hành kỷ luật bằng hình thức khai trừ?","options":["Sản xuất, tàng trữ, mua bán, vận chuyển trái phép hoặc tổ chức sử dụng trái phép các chất ma tuý.","Tổ chức chứa chấp và môi giới mại dâm; tổ chức hoạt động mại dâm; bảo kê mại dâm; lợi dụng kinh doanh dịch vụ để hoạt động mại dâm.","Chủ mưu, khởi xướng, tổ chức đánh bạc dưới mọi hình thức hoặc đã bị xử lý về hành vi đánh bạc nhưng tiếp tục tái phạm.","Cả 3 phương án trên."],"correct":3},{"q":"Trường hợp nào sau đây có thể dẫn đến kỷ luật giải tán tổ chức đảng nếu gây hậu quả đặc biệt nghiêm trọng?","options":["Chậm gửi một báo cáo định kỳ.","Không tổ chức sinh hoạt đảng ba kỳ liên tiếp mà không có lý do chính đáng.","Một đảng viên xin vắng sinh hoạt có lý do.","Chậm ban hành kế hoạch công tác một tuần."],"correct":1},{"q":"Biểu hiện nào sau đây bị cấm theo quy định về giữ gìn phẩm chất chính trị và trách nhiệm nêu gương?","options":["Đấu tranh với quan điểm sai trái, thù địch.","Chủ nghĩa cá nhân, cơ hội, vụ lợi và “lợi ích nhóm”.","Thực hiện tự phê bình và phê bình đúng nguyên tắc.","Gần gũi, lắng nghe ý kiến của quần chúng."],"correct":1},{"q":"Nội dung giám sát đối với tổ chức đảng bao gồm những nội dung nào sau đây?","options":["Việc lãnh đạo, chỉ đạo, tổ chức thực hiện chủ trương, quy định của Đảng, của cấp ủy cấp trên và cấp mình, pháp luật của Nhà nước.","Việc ban hành các văn bản có dấu hiệu trái với chủ trương, quy định của Đảng, pháp luật của Nhà nước.","Việc thực hiện các kết luận, quyết định kiểm tra, giám sát và kỷ luật tổ chức đảng, đảng viên vi phạm.","Cả 3 đáp án A, B, C."],"correct":3},{"q":"Đảng viên báo cáo sai, xuyên tạc sự thật, che giấu khuyết điểm, vi phạm của bản thân, người khác hoặc tổ chức, gây hậu quả nghiêm trọng thì bị kỷ luật thế nào?","options":["Khiển trách.","Cảnh cáo hoặc cách chức nếu có chức vụ.","Khai trừ trong mọi trường hợp.","Không kỷ luật nếu không gây thiệt hại vật chất."],"correct":1},{"q":"Trong thực hiện nhiệm vụ giám sát, Ủy ban kiểm tra có thể phân công thành viên thực hiện việc nào?","options":["Tham dự các cuộc họp của cấp ủy, ban thường vụ cấp ủy cùng cấp và cấp dưới theo quy định.","Thay cấp ủy cấp dưới quyết định toàn bộ công tác cán bộ.","Trực tiếp ban hành nghị quyết của chi bộ.","Hủy bỏ mọi quyết định của cấp ủy cấp trên."],"correct":0}],[{"q":"Chủ thể nào sau đây có thẩm quyền kiểm tra, giám sát?","options":["Cấp ủy các cấp.","Ủy ban kiểm tra các cấp.","Chi bộ.","Cả 3 phương án A, B, C."],"correct":3},{"q":"Một đảng viên có nhiều hành vi vi phạm được xem xét trong cùng một lần. Việc Quyết định kỷ luật được thực hiện thế nào?","options":["Ra quyết định riêng cho từng hành vi.","Chỉ xử lý hành vi xảy ra gần nhất.","Quyết định chung bằng một hình thức kỷ luật cao nhất tương ứng với các hành vi vi phạm.","Cộng số hình thức kỷ luật để áp dụng đồng thời."],"correct":2},{"q":"Chi bộ có thẩm quyền thi hành những hình thức kỷ luật nào đối với đảng viên trong chi bộ?","options":["Khiển trách và cảnh cáo.","Cảnh cáo và cách chức.","Cách chức và khai trừ.","Khiển trách, cảnh cáo và khai trừ."],"correct":0},{"q":"Sau khi tổ chức đảng có thẩm quyền ký quyết định kỷ luật phải kịp thời công bố?","options":["Chậm nhất không quá 30 ngày kể từ ngày ký.","Chậm nhất không quá 20 ngày kể từ ngày ký.","Chậm nhất không quá 15 ngày kể từ ngày ký.","Chậm nhất không quá 10 ngày kể từ ngày ký."],"correct":3},{"q":"Mốc thời gian kiểm tra thực hiện nhiệm vụ đảng viên của chi bộ theo kế hoạch thông thường không nên vượt quá khoảng thời gian nào gần nhất?","options":["02 năm.","03 năm.","05 năm.","10 năm."],"correct":2},{"q":"Đối với một hành vi vi phạm, nguyên tắc áp dụng hình thức kỷ luật là gì?","options":["Có thể áp dụng đồng thời hai hình thức kỷ luật đảng.","Chỉ áp dụng một hình thức kỷ luật đảng.","Không áp dụng kỷ luật nếu đã kiểm điểm.","Phải áp dụng cả kỷ luật đảng và kỷ luật hành chính."],"correct":1},{"q":"Nhiệm kỳ của ủy ban kiểm tra các cấp được tính:","options":["Theo nhiệm kỳ của cấp ủy cùng cấp.","Theo nhiệm kỳ của cấp ủy cấp trên.","Theo nhiệm kỳ của Đại hội Đảng toàn quốc.","Cả 3 phương án đã nêu."],"correct":0}],[{"q":"Theo nguyên tắc kiểm tra, giám sát và kỷ luật của Đảng, nhận định nào sau đây là đúng?","options":["Chỉ tổ chức đảng có dấu hiệu vi phạm mới phải chịu kiểm tra, giám sát.","Mọi tổ chức đảng và đảng viên đều phải chịu sự kiểm tra, giám sát, kỷ luật của Đảng, không có ngoại lệ.","Đảng viên không giữ chức vụ được miễn giám sát thường xuyên.","Chi bộ không thuộc đối tượng kiểm tra của cấp ủy cấp trên."],"correct":1},{"q":"Trong thi hành kỷ luật, trách nhiệm người đứng đầu được xem xét thế nào?","options":["Không xem xét.","Chỉ xem xét khi có tố cáo.","Xem xét đồng thời với trách nhiệm của tổ chức.","Giao cấp dưới xử lý."],"correct":2},{"q":"Nội dung đơn tố cáo nào sau đây được dùng làm căn cứ kết hợp với các thông tin khác để quyết định kiểm tra tổ chức đảng cấp dưới, đảng viên khi có dấu hiệu vi phạm?","options":["Đơn tố cáo đã được cấp có thẩm quyền giải quyết nhưng tái tố, không có nội dung mới.","Đơn tố cáo giấu tên, mạo tên có nội dung, địa chỉ cụ thể.","Đơn tố cáo có nội dung xác định được là vu cáo.","Đơn tố cáo do người không có năng lực hành vi kí tên."],"correct":1},{"q":"Khi nhận được khiếu nại kỷ luật, cấp ủy hoặc ủy ban kiểm tra cấp tỉnh, thành phố trực thuộc Trung ương và tương đương trở xuống, xem xét giải quyết, trả lời cho tổ chức đảng hoặc người khiếu nại biết trong thời hạn là bao lâu (tính từ ngày nhận được khiếu nại)?","options":["30 ngày làm việc.","60 ngày làm việc.","90 ngày làm việc.","180 ngày làm việc."],"correct":1},{"q":"Tổ chức đảng bao che, không xử lý hoặc xử lý không đúng hành vi vi phạm của tổ chức đảng, đảng viên thuộc quyền quản lý, gây hậu quả ít nghiêm trọng, lần đầu thì bị kỷ luật thế nào?","options":["Chỉ kiểm điểm rút kinh nghiệm.","Khiển trách.","Cảnh cáo.","Giải tán."],"correct":1},{"q":"Trường hợp cần thiết, thời gian để chi bộ giám sát chuyên đề đối với đảng viên được gia hạn tối đa bao nhiêu ngày?","options":["05 ngày.","10 ngày.","15 ngày.","30 ngày."],"correct":1},{"q":"Đảng viên viết bài, duyệt đăng, sao chép hoặc tán phát bài viết, thông tin không chính xác, gây hậu quả ít nghiêm trọng thì bị kỷ luật thế nào?","options":["Khiển trách.","Cảnh cáo.","Cách chức.","Khai trừ."],"correct":0}],[{"q":"Trước khi chi bộ họp xem xét, thi hành kỷ luật, đại diện chi ủy hoặc tổ trưởng tổ kiểm tra phải thực hiện việc gì?","options":["Gặp đảng viên vi phạm để nghe trình bày ý kiến, bản tự kiểm điểm và tự nhận hình thức kỷ luật.","Yêu cầu đảng viên viết đơn xin ra khỏi Đảng.","Công khai toàn bộ hồ sơ trên mạng nội bộ.","Chuyển hồ sơ cho cơ quan hành chính ra quyết định trước."],"correct":0},{"q":"Tổ chức đảng lần đầu buông lỏng lãnh đạo, chỉ đạo, đấu tranh chống suy thoái về tư tưởng chính trị, đạo đức, lối sống và gây hậu quả ít nghiêm trọng thì bị kỷ luật bằng hình thức nào?","options":["Khiển trách.","Cảnh cáo.","Giải tán.","Không xem xét kỷ luật."],"correct":0},{"q":"Ủy ban kiểm tra đảng ủy xã do tổ chức nào bầu?","options":["Đại hội đại biểu đảng bộ xã.","Ban Chấp hành Đảng bộ xã.","Ban Thường vụ Đảng ủy xã.","Ủy ban kiểm tra cấp trên."],"correct":1},{"q":"Tổ chức đảng nào có thẩm quyền kỷ luật đảng viên vi phạm?","options":["Chi bộ.","Ủy ban kiểm tra các cấp","Cấp ủy, ban thường vụ cấp ủy cơ sở trở lên.","Cả 3 phương án A, B, C."],"correct":3},{"q":"Đơn tố cáo nặc danh, giấu tên hoặc không rõ địa chỉ có giải quyết không?","options":["Bắt buộc giải quyết như đơn có tên.","Không giải quyết.","Chuyển cho chi bộ nơi người bị tố cáo sinh hoạt để tự xử lý.","Công khai toàn bộ nội dung trên hệ thống thông tin nội bộ."],"correct":1},{"q":"Đảng viên lợi dụng chức vụ, quyền hạn chi sai mục đích, đối tượng, định mức, tiêu chuẩn chính sách an sinh xã hội, gây hậu quả nghiêm trọng thì bị kỷ luật thế nào?","options":["Khiển trách.","Cảnh cáo hoặc cách chức nếu có chức vụ.","Không kỷ luật nếu người nhận có hoàn cảnh khó khăn.","Chỉ yêu cầu thu hồi tiền."],"correct":1},{"q":"Điểm khác nhau chủ yếu về mục đích trực tiếp giữa công tác kiểm tra và công tác giám sát của Đảng là gì?","options":["Kiểm tra nhằm làm rõ, kết luận và xử lý vi phạm khi cần; giám sát nhằm phòng ngừa, nhắc nhở và phát hiện sớm vi phạm.","Kiểm tra chỉ thực hiện khi có dấu hiệu vi phạm; giám sát chỉ thực hiện thường xuyên.","Kiểm tra do ủy ban kiểm tra thực hiện; giám sát chỉ do cấp ủy thực hiện.","Kiểm tra bắt buộc phải ban hành quyết định; giám sát không cần tuân theo quy trình."],"correct":0}]];
+
+// ============ STATE ============
+// KIẾN TRÚC "VÔ HÌNH":
+// - Panel & badge chỉ nói chuyện với KHÁN GIẢ bằng SỐ CÔNG BỐ (displaySetNum, publicDoneSets)
+// - Nội dung câu hỏi chạy THẬT theo con trỏ tuần tự nextRealIdx (0→15), khán giả không biết
+// - Bộ hoàn thành → ✓ ĐÃ THI gắn vào SỐ ĐÃ CÔNG BỐ, KHÔNG phải số thật → không lộ bài
+let currentSet = 0;        // chỉ số NỘI DUNG THẬT đang phát (0-15, tuần tự ngầm)
+let displaySetNum = 0;     // SỐ CÔNG BỐ trên badge/panel (random, 0-15)
+let publicDoneSets = [];   // các SỐ CÔNG BỐ đã thi xong (để ✓ trên panel)
+let nextRealIdx = 0;       // con trỏ nội dung thật, luôn tăng tuần tự khi 1 bộ hoàn thành
+let quizActive = false;    // đã chọn bộ và vào thi chưa
+let currentIdx = 0;
+let wrongPicks = [];       // các đáp án đã chọn sai (ngầm)
+let isAnswered = false;
+let strikeCount = 0;       // đếm ngầm, không hiển thị (sai 2 lần → hiện đáp án)
+let soundEnabled = true;
+
+// ============ AUDIO ============
+let correctAudio = null;
+let wrongAudio = null;
+let correctStopTimeout = null;
+
+function initAudio() {
+  if (!correctAudio) { correctAudio = new Audio('dung-vo-tay.mp3'); correctAudio.preload = 'auto'; }
+  if (!wrongAudio) { wrongAudio = new Audio('sai.wav'); wrongAudio.preload = 'auto'; }
+}
+
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; } }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playTone(freq, duration, type, volume, delay = 0) {
+  if (!soundEnabled) return;
+  const ctx = getAudioCtx(); if (!ctx) return;
+  const osc = ctx.createOscillator(); const gain = ctx.createGain();
+  osc.type = type; osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0, ctx.currentTime + delay);
+  gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + delay + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration);
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(ctx.currentTime + delay);
+  osc.stop(ctx.currentTime + delay + duration);
+}
+
+function soundCorrect() {
+  if (!soundEnabled) return;
+  initAudio();
+  if (correctStopTimeout) clearTimeout(correctStopTimeout);
+  correctAudio.currentTime = 0;
+  correctAudio.volume = 1;
+  correctAudio.play().catch(() => {});
+  correctStopTimeout = setTimeout(() => fadeOutAndStop(correctAudio, 500), 3000);
+}
+
+function fadeOutAndStop(audio, duration) {
+  const startVolume = audio.volume;
+  const steps = 20, stepTime = duration / steps, volumeStep = startVolume / steps;
+  let currentStep = 0;
+  const fadeInterval = setInterval(() => {
+    currentStep++;
+    audio.volume = Math.max(0, startVolume - volumeStep * currentStep);
+    if (currentStep >= steps) {
+      clearInterval(fadeInterval);
+      audio.pause(); audio.currentTime = 0; audio.volume = 1;
+    }
+  }, stepTime);
+}
+
+function soundWrong() {
+  if (!soundEnabled) return;
+  initAudio();
+  wrongAudio.currentTime = 0;
+  wrongAudio.play().catch(() => {});
+}
+
+function soundClick() {
+  if (!soundEnabled) return;
+  playSFX('btnClick', 0.7, 0.45); // cắt còn 0.45s - đủ nhấn mà không lê thê
+}
+
+function soundReveal() {
+  if (!soundEnabled) return;
+  const ctx = getAudioCtx(); if (!ctx) return;
+  playTone(523, 0.15, 'sine', 0.1);
+  setTimeout(() => playTone(659, 0.15, 'sine', 0.1), 100);
+  setTimeout(() => playTone(784, 0.25, 'sine', 0.12), 200);
+}
+
+let lastHoverTime = 0;
+function soundHover() {
+  if (!soundEnabled) return;
+  const now = Date.now();
+  if (now - lastHoverTime < 80) return;
+  lastHoverTime = now;
+  // Tick chuyên nghiệp, pitch cao hơn hover nút để phân biệt
+  if (!soundEnabled) return;
+  initSFX();
+  const a = new Audio(SFX.btnHover.src);
+  a.volume = 0.45;
+  a.playbackRate = 1.4; // cao hơn hover nút (1.0)
+  a.play().catch(() => {});
+}
+
+let lastBtnHoverTime = 0;
+function soundHoverBtn() {
+  if (!soundEnabled) return;
+  const now = Date.now();
+  if (now - lastBtnHoverTime < 100) return;
+  lastBtnHoverTime = now;
+  playSFX('btnHover', 0.5);
+}
+
+function createBgAnim() {
+  const c = document.getElementById('bgAnim');
+  for (let i = 0; i < 6; i++) {
+    const s = document.createElement('span');
+    const size = Math.random() * 60 + 20;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.animationDuration = (Math.random() * 12 + 10) + 's';
+    s.style.animationDelay = (Math.random() * 8) + 's';
+    c.appendChild(s);
+  }
+}
+
+// ============ LOGIC CHÍNH ============
+function startDisplay() {
+  soundClick();
+  getAudioCtx();
+  initAudio();
+  document.getElementById('startOverlay').classList.add('hidden');
+  currentIdx = 0;
+  wrongPicks = [];
+  isAnswered = false;
+  strikeCount = 0;
+  // Đi tới màn hình chọn bộ câu hỏi trước
+  openSetPanel();
+}
+
+function renderQuestion() {
+  const q = QUESTION_SETS[currentSet][currentIdx];
+  document.getElementById('qNum').textContent = currentIdx + 1;
+  document.getElementById('curInfo').textContent = currentIdx + 1;
+  document.getElementById('totalQ').textContent = QUESTION_SETS[currentSet].length;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('setIdBadge').textContent = 'Bộ câu hỏi số ' + (displaySetNum + 1);
+
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'opt';
+    div.dataset.idx = i;
+    div.innerHTML = `
+      <div class="opt-letter">${String.fromCharCode(65 + i)}</div>
+      <div class="opt-text">${opt}</div>
+    `;
+    div.onclick = () => pickAnswer(i);
+    div.addEventListener('mouseenter', soundHover);
+    grid.appendChild(div);
+  });
+
+  wrongPicks = [];
+  isAnswered = false;
+  strikeCount = 0;
+}
+
+function pickAnswer(idx) {
+  if (isAnswered) return;
+  const q = QUESTION_SETS[currentSet][currentIdx];
+  soundClick();
+
+  // Chọn ĐÚNG
+  if (idx === q.correct) {
+    isAnswered = true;
+    const opts = document.querySelectorAll('.opt');
+    opts.forEach(o => o.classList.remove('picked-wrong', 'dim'));
+    opts[idx].classList.add('picked-correct', 'blink-correct');
+    opts.forEach((o, i) => { if (i !== q.correct) o.classList.add('dim'); });
+    soundCorrect();
+    spawnConfetti(60);
+    return;
+  }
+
+  // Chọn lại đáp án đã sai trước đó → không làm gì
+  if (wrongPicks.includes(idx)) {
+    return;
+  }
+
+  // Chọn SAI - đếm ngầm, không hiển thị số lần sai
+  wrongPicks.push(idx);
+  strikeCount++;
+  const opts = document.querySelectorAll('.opt');
+  opts[idx].classList.add('picked-wrong');
+  soundWrong();
+
+  // Sai đủ 2 lần (ngầm) → tự hiện đáp án đúng, IM LẶNG (luật 2 đội/lượt)
+  if (strikeCount >= 2) {
+    isAnswered = true;
+    setTimeout(() => {
+      opts.forEach(o => o.classList.remove('picked-wrong', 'dim'));
+      opts[q.correct].classList.add('picked-correct', 'blink-correct');
+      opts.forEach((o, i) => { if (i !== q.correct) o.classList.add('dim'); });
+    }, 800);
+  }
+}
+
+// ============ PANEL CHỌN BỘ CÂU HỎI ============
+function renderSetGrid() {
+  const grid = document.getElementById('setGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < 16; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'set-btn';
+    if (publicDoneSets.includes(i)) {
+      btn.classList.add('done');
+      btn.disabled = true;
+    }
+    if (i === displaySetNum && quizActive && !publicDoneSets.includes(i)) {
+      btn.classList.add('current');
+      btn.innerHTML = `<span class="set-num">${i + 1}</span>Bộ ${i + 1}`;
+    } else {
+      btn.innerHTML = `<span class="set-num">${i + 1}</span>Bộ ${i + 1}`;
+    }
+    btn.onclick = () => switchToSet(i);
+    grid.appendChild(btn);
+  }
+  // Nút random disable nếu không còn số công bố nào chưa bị ✓
+  const available = [];
+  for (let i = 0; i < 16; i++) {
+    if (!publicDoneSets.includes(i)) available.push(i);
+  }
+  document.getElementById('btnRandom').disabled = available.length === 0;
+}
+
+function openSetPanel() {
+  soundClick();
+  stopPaperCannon();
+  stopWaitSparkle();
+  stopWaitMusic();
+  document.getElementById('finishOverlay').classList.remove('show');
+  document.getElementById('setPanelOverlay').classList.add('show');
+  renderSetGrid();
+}
+
+function closeSetPanel() {
+  soundClick();
+  stopRollDrum(); // tránh trống kêu lơ lửng nếu đóng giữa lúc quay
+  document.getElementById('setPanelOverlay').classList.remove('show');
+}
+
+// ============ ÂM THANH CHUYÊN NGHIỆP (file mp3 Mixkit) ============
+// Pool audio để phát chồng nhiều instance
+const SFX = {
+  rollTick: null,      // tiếng trống 1 nhịp - dùng cho mỗi lần đèn nháy
+  fanfareWin: null,    // fanfare + dàn hợp âm thắng cuộc (8.3s)
+  cheerWhistle: null,  // đám đông reo hò + còi (cắt 3s)
+  btnHover: null,      // hover nút (0.18s)
+  btnClick: null,      // click nút (1.1s - cắt 0.3s)
+  chonBoDe: null,      // nhạc chọn bộ đề xong (3s)
+  hoanThanh: null,     // nhạc màn hoàn thành (5.5s)
+  nhacNenCho: null     // nhạc nền chờ lặp (6.6s)
+};
+
+function initSFX() {
+  if (SFX.rollTick) return;
+  SFX.rollTick = new Audio('roll-tick.mp3');
+  SFX.fanfareWin = new Audio('fanfare-win.mp3');
+  SFX.cheerWhistle = new Audio('cheer-whistle.mp3');
+  SFX.btnHover = new Audio('btn-hover.mp3');
+  SFX.btnClick = new Audio('btn-click.mp3');
+  SFX.chonBoDe = new Audio('chon-bo-de.mp3');
+  SFX.hoanThanh = new Audio('hoan-thanh-phan-thi.mp3');
+  SFX.nhacNenCho = new Audio('Nhac-nen-cho.mp3');
+  [SFX.rollTick, SFX.fanfareWin, SFX.cheerWhistle, SFX.btnHover, SFX.btnClick, SFX.chonBoDe, SFX.hoanThanh, SFX.nhacNenCho].forEach(a => { a.preload = 'auto'; a.volume = 0.8; });
+}
+
+// Phát 1 file mới mỗi lần (cho phép chồng âm)
+function playSFX(name, volume = 0.8, maxDuration = 0) {
+  if (!soundEnabled) return;
+  initSFX();
+  const a = new Audio(SFX[name].src);
+  a.volume = volume;
+  a.play().catch(() => {});
+  if (maxDuration > 0) {
+    // Fadeout ngắn cuối trước khi dừng
+    setTimeout(() => {
+      const steps = 10, stepTime = 300 / steps;
+      let i = 0;
+      const iv = setInterval(() => {
+        i++;
+        a.volume = Math.max(0, volume * (1 - i / steps));
+        if (i >= steps) { clearInterval(iv); a.pause(); }
+      }, stepTime);
+    }, (maxDuration - 0.3) * 1000);
+  }
+}
+
+// Âm thanh random: trống chạy NỀN liên tục (1 instance, loop),
+// KHÔNG phát mới từng tick (tránh chồng âm rối như tiếng tàu)
+let rollDrum = null; // instance trống nền đang chạy
+
+function startRollDrum() {
+  if (!soundEnabled) return;
+  initSFX();
+  stopRollDrum();
+  rollDrum = new Audio(SFX.rollTick.src);
+  rollDrum.loop = true;
+  rollDrum.volume = 0.6;
+  rollDrum.play().catch(() => {});
+}
+
+function stopRollDrum() {
+  if (rollDrum) {
+    // Fadeout nhanh 0.3s cho tự nhiên
+    const d = rollDrum;
+    const steps = 10;
+    let i = 0;
+    const iv = setInterval(() => {
+      i++;
+      d.volume = Math.max(0, 0.6 * (1 - i / steps));
+      if (i >= steps) { clearInterval(iv); d.pause(); d.currentTime = 0; }
+    }, 30);
+    rollDrum = null;
+  }
+}
+function switchToSet(idx) {
+  if (publicDoneSets.includes(idx)) return;
+  // Bấm đúng số đang công bố (chưa xong) → chỉ đóng panel, thi tiếp, không reset
+  if (quizActive && idx === displaySetNum) {
+    soundClick();
+    document.getElementById('setPanelOverlay').classList.remove('show');
+    return;
+  }
+  soundClick();
+  // Công bố số idx, nhưng NỘI DUNG vẫn lấy bộ thật kế tiếp trong hàng đợi
+  const realIdx = Math.min(nextRealIdx, QUESTION_SETS.length - 1);
+  enterSet(idx, realIdx);
+}
+
+// Mini game random: quay hiệu ứng đẹp
+// LOGIC NGẦM: SỐ CÔNG BỐ random cho vui; NỘI DUNG luôn chạy tuần tự 1→16
+// qua con trỏ nextRealIdx. ✓ ĐÃ THI trên panel gắn vào số công bố → không lộ bài.
+function randomPickSet() {
+  // available = các SỐ CÔNG BỐ chưa bị ✓ (panel); nội dung thật = con trỏ tuần tự
+  const available = [];
+  for (let i = 0; i < 16; i++) {
+    if (!publicDoneSets.includes(i)) available.push(i);
+  }
+  if (available.length === 0) return;
+
+  soundClick();
+  document.getElementById('btnRandom').disabled = true;
+  const grid = document.getElementById('setGrid');
+  const btns = grid.querySelectorAll('.set-btn');
+
+  // NỘI DUNG THẬT = bộ kế tiếp trong hàng đợi tuần tự (khán giả không thấy số này)
+  const realSet = Math.min(nextRealIdx, QUESTION_SETS.length - 1);
+  // SỐ CÔNG BỐ = ngẫu nhiên trong các số chưa ✓ (chỉ để nhìn, để quay gameshow)
+  const shownSet = available[Math.floor(Math.random() * available.length)];
+
+  // Tính số lần nháy để lần CUỐI cùng dừng đúng ở shownSet
+  // Timeline ~5s + winner 5s:
+  //   Phase A (0-2.2s): quay nhanh đều 65ms/lần - nháy NGẪU NHIÊN
+  //   Phase B (2.2-4.7s): giảm tốc dần 65ms→250ms - hồi hộp
+  //   Phase C: dừng + 3 nốt chốt
+  //   Phase D: winner 5s (chon-bo-de.mp3)
+  const totalRolls = 34;
+  let rollCount = 0;
+  let delay = 120;                     // khoảng cách tick hiện tại (ms) - nhanh như bản gốc
+  const fastDelay = 120;
+  const slowDelay = 250;
+  const slowStart = 22;              // từ tick thứ 34 bắt đầu chậm dần
+  let lastPick = -1;                 // tránh nháy 2 lần liên tiếp cùng nút
+  let rollTimeout = null;
+
+  function scheduleTick() {
+    rollTimeout = setTimeout(() => {
+      // Tính delay cho tick này (gia tốc chậm dần sau tick 55)
+      if (rollCount >= slowStart) {
+        const t = (rollCount - slowStart) / (totalRolls - slowStart);
+        delay = fastDelay + (slowDelay - fastDelay) * t * t;
+      }
+      // Nháy đèn NGẪU NHIÊN (khác lần trước, phải nằm trong available)
+      btns.forEach(b => b.classList.remove('rolling'));
+      let pick;
+      if (available.length === 1) {
+        pick = available[0]; // chỉ còn 1 bộ - khỏi vòng lặp vô hạn
+      } else {
+        do {
+          pick = Math.floor(Math.random() * 16);
+        } while (pick === lastPick || !available.includes(pick));
+      }
+      lastPick = pick;
+      btns[pick].classList.add('rolling');
+      // MIDI tick ngẫu nhiên: pitch nhảy ngẫu nhiên 480-1110Hz
+      playTone(480 + Math.floor(Math.random() * 8) * 90, 0.05, 'square', 0.07);
+      // Nhịp trống MIDI nền mỗi 8 tick cho có nhịp
+      if (rollCount % 8 === 0) playTone(160, 0.09, 'sine', 0.12);
+      rollCount++;
+
+      if (rollCount < totalRolls) {
+        scheduleTick();
+      } else {
+        // Hết phase A+B: dừng đèn ở shownSet
+        btns.forEach(b => b.classList.remove('rolling'));
+        btns[shownSet].classList.add('rolling');
+        playSFX('btnClick', 0.7);
+
+        // Phase D: sau 0.8s - winner phóng to + nhấp nháy 5s + fanfare + reo hò
+        setTimeout(() => {
+          btns.forEach(b => b.classList.remove('rolling'));
+          btns[shownSet].classList.add('winner');
+          playSFX('chonBoDe', 0.85);
+          spawnConfetti(60);
+          // Phase E: sau 5s - tắt hiệu ứng, vào thi
+          // NGẦM: dùng realSet (thứ tự 1→10), GIAO DIỆN: badge hiển thị shownSet+1
+          setTimeout(() => {
+            btns[shownSet].classList.remove('winner');
+            enterSet(shownSet, realSet);
+          }, 5000);
+        }, 800);
+      }
+    }, delay);
+  }
+
+  scheduleTick();
+}
+
+// Vào thi: displaySet = SỐ CÔNG BỐ trên badge/panel, realSet = NỘI DUNG THẬT (tuần tự ngầm)
+function enterSet(displaySet, realSet) {
+  currentSet = realSet;
+  displaySetNum = displaySet;
+  currentIdx = 0;
+  wrongPicks = [];
+  isAnswered = false;
+  strikeCount = 0;
+  quizActive = true;
+  document.getElementById('setPanelOverlay').classList.remove('show');
+  document.getElementById('setIdBadge').textContent = 'Bộ câu hỏi số ' + (displaySet + 1);
+  renderQuestion();
+}
+
+// ============ ĐIỀU HƯỚNG ============
+function nextQ() {
+  soundClick();
+  if (currentIdx < QUESTION_SETS[currentSet].length - 1) {
+    currentIdx++;
+    renderQuestion();
+  } else {
+    // Hết câu → đánh dấu SỐ CÔNG BỐ đã thi (✓ panel), nhích con trỏ nội dung thật
+    if (!publicDoneSets.includes(displaySetNum)) {
+      publicDoneSets.push(displaySetNum);
+      nextRealIdx++; // nội dung thật tiến bộ tiếp theo (ngầm, không ai thấy)
+    }
+    document.getElementById('finishOverlay').classList.add('show');
+    spawnConfetti(80);
+    soundCorrect();
+    // Pháo giấy tung hoa lớn (kết thúc sau khi hết nhạc ~1s)
+    startPaperCannon(6400);
+    // Nhạc hoàn thành (5.5s)
+    playSFX('hoanThanh', 0.85);
+    // Sau khi tung hoa xong: hiệu ứng chờ nhẹ + nhạc nền lặp
+    setTimeout(() => startWaitSparkle(), 6900);
+    setTimeout(() => startWaitMusic(), 6900);
+  }
+}
+
+function prevQ() {
+  soundClick();
+  if (currentIdx > 0) {
+    currentIdx--;
+    renderQuestion();
+  }
+}
+
+// ============ PHÁO GIẤY HOÀNH TRÁNG (confetti cannon) ============
+let paperCannonActive = false;
+let paperCannonRAF = null;
+
+// Nhạc nền chờ - loop riêng, dừng khi người dùng bấm chọn bộ đề
+let waitMusic = null;
+
+function startWaitMusic() {
+  if (!soundEnabled) return;
+  initSFX();
+  stopWaitMusic();
+  waitMusic = new Audio(SFX.nhacNenCho.src);
+  waitMusic.loop = true;
+  waitMusic.volume = 0.6;
+  waitMusic.play().catch(() => {});
+}
+
+function stopWaitMusic() {
+  if (waitMusic) {
+    const m = waitMusic;
+    waitMusic = null;
+    // Fadeout 0.5s cho tự nhiên
+    const steps = 15;
+    let i = 0;
+    const iv = setInterval(() => {
+      i++;
+      m.volume = Math.max(0, 0.6 * (1 - i / steps));
+      if (i >= steps) { clearInterval(iv); m.pause(); m.currentTime = 0; }
+    }, 33);
+  }
+}
+
+// ============ HIỆU ỨNG CHỜ: giấy rơi lác đác nhẹ nhàng, lặp vô hạn ============
+let waitSparkleActive = false;
+let waitSparkleRAF = null;
+
+function startWaitSparkle() {
+  waitSparkleActive = true;
+  const overlay = document.getElementById('finishOverlay');
+  let canvas = overlay.querySelector('.fx-canvas');
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.className = 'fx-canvas';
+    overlay.insertBefore(canvas, overlay.firstChild);
+  }
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+
+  const PALETTE = ['#ffd700', '#ffb300', '#ff7ab8', '#c084fc', '#4dff88', '#22d3ee', '#ffffff'];
+  const pieces = [];
+
+  // Rắc thêm mảnh mới lác đác từ trên
+  function sprinkle() {
+    if (!waitSparkleActive) return;
+    for (let i = 0; i < 3; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: -15,
+        vx: (Math.random() - 0.5) * 1.4,
+        vy: 1.2 + Math.random() * 1.8,
+        w: 5 + Math.random() * 7,
+        h: 8 + Math.random() * 10,
+        rot: Math.random() * Math.PI * 2,
+        vr: (Math.random() - 0.5) * 0.22,
+        phase: Math.random() * Math.PI * 2,
+        vphase: 0.08 + Math.random() * 0.16,
+        color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+        life: 1,
+        decay: 0.0018
+      });
+    }
+  }
+  setInterval(sprinkle, 700);
+
+  function animate() {
+    if (!waitSparkleActive) { ctx.clearRect(0, 0, canvas.width, canvas.height); return; }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = pieces.length - 1; i >= 0; i--) {
+      const p = pieces[i];
+      p.vy += 0.06;
+      p.vx *= 0.995;
+      p.vx += Math.sin(p.phase * 2) * 0.03;
+      p.x += p.vx; p.y += p.vy;
+      p.rot += p.vr;
+      p.phase += p.vphase;
+      p.life -= p.decay;
+      if (p.life <= 0 || p.y > canvas.height + 30) { pieces.splice(i, 1); continue; }
+      const flip = Math.abs(Math.sin(p.phase));
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.scale(1, 0.3 + flip * 0.7);
+      ctx.globalAlpha = Math.min(0.85, p.life);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+    waitSparkleRAF = requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+function stopWaitSparkle() {
+  waitSparkleActive = false;
+  if (waitSparkleRAF) { cancelAnimationFrame(waitSparkleRAF); waitSparkleRAF = null; }
+  const overlay = document.getElementById('finishOverlay');
+  if (overlay) {
+    const canvas = overlay.querySelector('.fx-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+}
+
+// Dừng pháo giấy (khi người dùng bấm nút chức năng)
+function stopPaperCannon() {
+  if (paperCannonRAF) { cancelAnimationFrame(paperCannonRAF); paperCannonRAF = null; }
+  paperCannonActive = false;
+  const overlay = document.getElementById('finishOverlay');
+  if (overlay) {
+    const canvas = overlay.querySelector('.fx-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+}
+
+function startPaperCannon(duration) {
+  // duration = null -> lặp VÔ HẠN đến khi gọi stopPaperCannon()
+  // duration = số ms -> tự dừng sau khoảng đó
+  paperCannonActive = true;
+  const overlay = document.getElementById('finishOverlay');
+  let canvas = overlay.querySelector('.fx-canvas');
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.className = 'fx-canvas';
+    overlay.insertBefore(canvas, overlay.firstChild);
+  }
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+
+  const PALETTE = [
+    '#ffd700', '#ffb300', '#ff4d4d', '#ff7ab8', '#c084fc',
+    '#4dff88', '#22d3ee', '#4db8ff', '#ffffff', '#fff59d'
+  ];
+  const pieces = [];
+
+  // 1 mảnh giấy hình chữ nhật xoay 3D giả lập (scaleY dao động)
+  function spawnBurst(originX, originY, count, power, spread) {
+    for (let i = 0; i < count; i++) {
+      const angle = -Math.PI / 2 + (Math.random() - 0.5) * spread;
+      const speed = power * (0.55 + Math.random() * 0.7);
+      pieces.push({
+        x: originX + (Math.random() - 0.5) * 40,
+        y: originY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        w: 7 + Math.random() * 9,          // chiều rộng mảnh giấy
+        h: 11 + Math.random() * 14,        // chiều cao mảnh giấy
+        rot: Math.random() * Math.PI * 2,  // góc xoay 2D
+        vr: (Math.random() - 0.5) * 0.32,  // tốc độ xoay 2D
+        phase: Math.random() * Math.PI * 2, // pha lật 3D
+        vphase: 0.12 + Math.random() * 0.22,
+        color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+        life: 1,
+        decay: 0.0035 + Math.random() * 0.0045
+      });
+    }
+  }
+
+  // Vị trí bắn: 2 góc dưới + 2 điểm giữa màn (kiểu cannon tiệc)
+  function fireCannons() {
+    const W = canvas.width, H = canvas.height;
+    // Góc trái dưới - bắn chéo lên phải
+    spawnBurst(W * 0.06, H * 0.92, 42, 15, 0.9);
+    // Góc phải dưới - bắn chéo lên trái
+    spawnBurst(W * 0.94, H * 0.92, 42, 15, 0.9);
+    // 2 cột giữa mạnh hơn
+    spawnBurst(W * 0.35, H * 0.85, 30, 17, 0.7);
+    spawnBurst(W * 0.65, H * 0.85, 30, 17, 0.7);
+    // Rơi từ trên cao nữa cho dày
+    for (let i = 0; i < 55; i++) {
+      pieces.push({
+        x: Math.random() * W,
+        y: -20 - Math.random() * 60,
+        vx: (Math.random() - 0.5) * 2.2,
+        vy: 1.5 + Math.random() * 2.5,
+        w: 7 + Math.random() * 9,
+        h: 11 + Math.random() * 14,
+        rot: Math.random() * Math.PI * 2,
+        vr: (Math.random() - 0.5) * 0.3,
+        phase: Math.random() * Math.PI * 2,
+        vphase: 0.1 + Math.random() * 0.2,
+        color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+        life: 1,
+        decay: 0.0028 + Math.random() * 0.004
+      });
+    }
+  }
+
+  const startTime = Date.now();
+  let lastFire = 0;
+  // Bắn ngay lập tức 1 đợt lớn
+  fireCannons();
+
+  function animate() {
+    if (!paperCannonActive) { ctx.clearRect(0, 0, canvas.width, canvas.height); return; }
+    const elapsed = Date.now() - startTime;
+
+    // Bắn thêm đợt mới mỗi ~900ms (liên tục nếu lặp vô hạn)
+    if ((duration === null || elapsed < duration - 1500) && Date.now() - lastFire > 900) {
+      fireCannons();
+      lastFire = Date.now();
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = pieces.length - 1; i >= 0; i--) {
+      const p = pieces[i];
+      // Vật lý: gravity + air drag + dao động nhẹ kiểu giấy lượn
+      p.vy += 0.16;
+      p.vx *= 0.992;
+      p.vy *= 0.994;
+      p.vx += Math.sin(p.phase * 2.2) * 0.05;
+      p.x += p.vx; p.y += p.vy;
+      p.rot += p.vr;
+      p.phase += p.vphase;
+      p.life -= p.decay;
+
+      if (p.life <= 0 || p.y > canvas.height + 40) {
+        pieces.splice(i, 1);
+        continue;
+      }
+
+      // Vẽ mảnh giấy với hiệu ứng lật 3D (scaleY dao động)
+      const flip = Math.abs(Math.sin(p.phase));
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.scale(1, 0.25 + flip * 0.75);
+      ctx.globalAlpha = Math.min(1, p.life * 1.6);
+      ctx.fillStyle = p.color;
+      // Sáng hơn khi mặt trước, tối hơn khi lật mặt sau
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1;
+
+    if (duration === null || elapsed < duration) {
+      paperCannonRAF = requestAnimationFrame(animate);
+    } else {
+      paperCannonActive = false;
+      // Đợi mảnh cuối rơi hết rồi clear
+      const fadeOut = () => {
+        if (pieces.length > 0) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          requestAnimationFrame(fadeOut);
+          // vẫn vẽ tiếp các mảnh còn lại
+          for (let i = pieces.length - 1; i >= 0; i--) {
+            const p = pieces[i];
+            p.vy += 0.16; p.vx *= 0.992; p.vy *= 0.994;
+            p.x += p.vx; p.y += p.vy;
+            p.rot += p.vr; p.phase += p.vphase;
+            p.life -= p.decay * 1.6;
+            if (p.life <= 0 || p.y > canvas.height + 40) { pieces.splice(i, 1); continue; }
+            const flip = Math.abs(Math.sin(p.phase));
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.scale(1, 0.25 + flip * 0.75);
+            ctx.globalAlpha = Math.max(0, Math.min(1, p.life * 1.6));
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+          }
+          ctx.globalAlpha = 1;
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      };
+      requestAnimationFrame(fadeOut);
+    }
+  }
+  animate();
+}
+
+function finishShow() {
+  soundClick();
+  stopPaperCannon();
+  stopWaitSparkle();
+  stopWaitMusic();
+  // Đánh dấu SỐ CÔNG BỐ đã thi xong (✓ panel) + nhích con trỏ thật, rồi mở panel
+  if (!publicDoneSets.includes(displaySetNum)) {
+    publicDoneSets.push(displaySetNum);
+    nextRealIdx++;
+  }
+  openSetPanel();
+}
+
+function spawnConfetti(count) {
+  const layer = document.getElementById('confettiLayer');
+  const colors = ['#ffd700', '#c8102e', '#22c55e', '#3b82f6', '#ec4899', '#f97316'];
+  for (let i = 0; i < count; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + '%';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    c.style.animationDelay = (Math.random() * 0.5) + 's';
+    c.style.width = (Math.random() * 10 + 6) + 'px';
+    c.style.height = (Math.random() * 14 + 8) + 'px';
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    layer.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+
+// ============ FULLSCREEN ============
+function toggleFullscreen() {
+  soundClick();
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      console.log('Fullscreen error:', err);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+// ============ NÚT ÂM THANH & FULLSCREEN ============
+document.getElementById('soundToggle').onclick = () => {
+  soundEnabled = !soundEnabled;
+  document.getElementById('soundToggle').textContent = soundEnabled ? '🔊' : '🔇';
+  if (soundEnabled) { getAudioCtx(); soundClick(); }
+};
+document.getElementById('soundToggle').addEventListener('mouseenter', soundHoverBtn);
+
+document.getElementById('fullscreenToggle').addEventListener('click', toggleFullscreen);
+document.getElementById('fullscreenToggle').addEventListener('mouseenter', soundHoverBtn);
+
+// Gắn âm thanh hover cho nút chức năng
+document.querySelectorAll('.control-bar .ctrl-btn, .start-overlay .start-btn-big, .finish-overlay .start-btn-big, .btn-random, .btn-close-panel').forEach(btn => {
+  btn.addEventListener('mouseenter', soundHoverBtn);
+});
+
+createBgAnim();
+</script>
+</body>
+</html>
