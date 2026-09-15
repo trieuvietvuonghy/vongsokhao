@@ -1123,7 +1123,7 @@ function renderQuestion() {
   wrongPicks = [];
   isAnswered = false;
   strikeCount = 0;
-  // Hẹn giờ bật nhạc chờ câu hỏi (loop, vol 0.35) sau 18s hiển thị đáp án
+  // Hẹn giờ bật nhạc chờ câu hỏi (loop, vol 0.35) sau 20s hiển thị đáp án
   startQuestionWaitMusic();
 }
 
@@ -1497,17 +1497,17 @@ function stopWaitMusic() {
   }
 }
 
-// Nhạc chờ câu hỏi - phát loop sau khi hiện đáp án 18s, CHỈ tắt khi chọn đáp án
+// Nhạc chờ câu hỏi - phát loop sau khi hiện đáp án 20s, CHỈ tắt khi chọn đáp án
 let questionWaitMusic = null;
 let questionWaitTimer = null;
-const QUESTION_WAIT_DELAY = 18000;
+const QUESTION_WAIT_DELAY = 20000;
 const QUESTION_WAIT_VOL = 0.35;
 
 function startQuestionWaitMusic() {
   stopQuestionWaitMusic(0);
   if (!soundEnabled) return;
   initSFX();
-  // Chờ 18s sau khi câu hỏi hiện ra mới phát (nếu vẫn chưa trả lời)
+  // Chờ 20s sau khi câu hỏi hiện ra mới phát (nếu vẫn chưa trả lời)
   questionWaitTimer = setTimeout(() => {
     questionWaitTimer = null;
     if (!soundEnabled) return;
