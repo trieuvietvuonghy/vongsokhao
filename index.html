@@ -811,6 +811,21 @@
     position: relative;
     z-index: 2;
   }
+  /* Cúp vàng trên nền tròn vàng - không dùng gradient-text để emoji luôn hiển thị */
+  .finish-trophy {
+    font-size: 68px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 128px;
+    height: 128px;
+    background: radial-gradient(circle at 50% 30%, #fff6c9 0%, var(--gold) 55%, var(--gold-dark) 100%);
+    border: 3px solid var(--gold-light);
+    border-radius: 50%;
+    box-shadow: 0 0 0 6px rgba(248,192,36,0.2), 0 10px 30px rgba(0,0,0,0.5), 0 0 44px rgba(248,192,36,0.35);
+    margin: 0 auto 14px;
+  }
 
   @media (max-width: 1100px) {
     .options-grid { grid-template-columns: 1fr; }
@@ -939,8 +954,8 @@
     <div class="intro-logo-wrap" style="margin-bottom: 20px;">
       <img src="twd.png" alt="Logo" class="intro-logo" style="width: 110px; height: 110px;">
     </div>
-    <div class="intro-org">HOÀN THÀNH PHẦN THI</div>
-    <h1>🏆 CHÚC MỪNG CÁC ĐỘI!</h1>
+    <div class="finish-trophy">🏆</div>
+    <h1>CHÚC MỪNG HAI ĐỘI!</h1>
     <div class="intro-tagline" style="margin-bottom: 34px;">đã hoàn thành phần thi của mình, mời 2 đội kế tiếp chuẩn bị.</div>
     <button class="start-btn-big" onclick="openSetPanel()">📚 CHỌN BỘ CÂU HỎI TIẾP THEO</button>
   </div>
