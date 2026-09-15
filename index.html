@@ -726,7 +726,7 @@
     color: #1a1a1a;
     border-color: var(--gold-light);
     z-index: 5;
-    animation: winnerGlow 0.42s ease-in-out 7;
+    animation: winnerGlow 0.42s ease-in-out 10;
   }
   .set-btn.winner .set-num { color: #1a1a1a; }
   @keyframes winnerGlow {
@@ -1401,18 +1401,18 @@ function randomPickSet() {
         btns[shownSet].classList.add('rolling');
         playSFX('btnClick', 0.7);
 
-        // Phase D: sau 0.8s - winner phóng to + nhấp nháy 3s + fanfare + reo hò
+        // Phase D: sau 0.8s - winner phóng to + nhấp nháy 4s + fanfare + reo hò
         setTimeout(() => {
           btns.forEach(b => b.classList.remove('rolling'));
           btns[shownSet].classList.add('winner');
           playSFX('chonBoDe', 0.85);
           spawnConfetti(60);
-          // Phase E: sau 3s - tắt hiệu ứng, vào thi
+          // Phase E: sau 4s - tắt hiệu ứng, vào thi
           // NGẦM: dùng realSet (thứ tự 1→10), GIAO DIỆN: badge hiển thị shownSet+1
           setTimeout(() => {
             btns[shownSet].classList.remove('winner');
             enterSet(shownSet, realSet);
-          }, 3000);
+          }, 4000);
         }, 800);
       }
     }, delay);
