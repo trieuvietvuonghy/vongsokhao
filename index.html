@@ -1123,11 +1123,19 @@ function renderQuestion() {
   wrongPicks = [];
   isAnswered = false;
   strikeCount = 0;
+  // Bật nhạc chờ câu hỏi (loop) mỗi khi hiển thị đáp án
+  startQuestionWaitMusic();
 }
 
 function pickAnswer(idx) {
   if (isAnswered) return;
   const q = QUESTION_SETS[currentSet][currentIdx];
+  // Chọn lại đáp án đã sai trước đó → không làm gì (giữ nguyên nhạc)
+  if (wrongPicks.includes(idx)) {
+    return;
+  }
+  // TẮT nhạc chờ câu hỏi ngay khi chọn đáp án (kể cả đúng/sai lần 1)
+  stopQuestionWaitMusic();
   soundClick();
 
   // Chọn ĐÚNG
@@ -1140,11 +1148,6 @@ function pickAnswer(idx) {
     soundCorrect();
     spawnConfetti(60);
     scheduleFinishAfterAnswer();
-    return;
-  }
-
-  // Chọn lại đáp án đã sai trước đó → không làm gì
-  if (wrongPicks.includes(idx)) {
     return;
   }
 
@@ -1203,6 +1206,7 @@ function openSetPanel() {
   stopPaperCannon();
   stopWaitSparkle();
   stopWaitMusic();
+  stopQuestionWaitMusic();
   document.getElementById('finishOverlay').classList.remove('show');
   document.getElementById('setPanelOverlay').classList.add('show');
   renderSetGrid();
@@ -1212,6 +1216,11 @@ function closeSetPanel() {
   soundClick();
   stopRollDrum(); // tránh trống kêu lơ lửng nếu đóng giữa lúc quay
   document.getElementById('setPanelOverlay').classList.remove('show');
+  // Quay lại câu hỏi đang dở (chưa trả lời) → bật lại nhạc chờ
+  if (quizActive && !isAnswered
+      && !document.getElementById('finishOverlay').classList.contains('show')) {
+    startQuestionWaitMusic();
+  }
 }
 
 // ============ ÂM THANH CHUYÊN NGHIỆP (file mp3 Mixkit) ============
@@ -1224,7 +1233,8 @@ const SFX = {
   btnClick: null,      // click nút (1.1s - cắt 0.3s)
   chonBoDe: null,      // nhạc chọn bộ đề xong (3s)
   hoanThanh: null,     // nhạc màn hoàn thành (5.5s)
-  nhacNenCho: null     // nhạc nền chờ lặp (6.6s)
+  nhacNenCho: null,    // nhạc nền chờ lặp (6.6s)
+  nhacChoCauHoi: null  // nhạc chờ câu hỏi - loop khi hiển thị đáp án
 };
 
 function initSFX() {
@@ -1237,7 +1247,8 @@ function initSFX() {
   SFX.chonBoDe = new Audio('chon-bo-de.mp3');
   SFX.hoanThanh = new Audio('hoan-thanh-phan-thi.mp3');
   SFX.nhacNenCho = new Audio('Nhac-nen-cho.mp3');
-  [SFX.rollTick, SFX.fanfareWin, SFX.cheerWhistle, SFX.btnHover, SFX.btnClick, SFX.chonBoDe, SFX.hoanThanh, SFX.nhacNenCho].forEach(a => { a.preload = 'auto'; a.volume = 0.8; });
+  SFX.nhacChoCauHoi = new Audio('Nhac-cho-cau-hoi.mp3');
+  [SFX.rollTick, SFX.fanfareWin, SFX.cheerWhistle, SFX.btnHover, SFX.btnClick, SFX.chonBoDe, SFX.hoanThanh, SFX.nhacNenCho, SFX.nhacChoCauHoi].forEach(a => { a.preload = 'auto'; a.volume = 0.8; });
 }
 
 // Phát 1 file mới mỗi lần (cho phép chồng âm)
@@ -1296,6 +1307,7 @@ function switchToSet(idx) {
   if (quizActive && idx === displaySetNum) {
     soundClick();
     document.getElementById('setPanelOverlay').classList.remove('show');
+    if (!isAnswered) startQuestionWaitMusic();
     return;
   }
   soundClick();
@@ -1411,6 +1423,7 @@ function enterSet(displaySet, realSet) {
 // ============ ĐIỀU HƯỚNG ============
 function finishCurrentSet() {
   if (document.getElementById('finishOverlay').classList.contains('show')) return;
+  stopQuestionWaitMusic();
   // Hết câu → đánh dấu SỐ CÔNG BỐ đã thi (✓ panel), nhích con trỏ nội dung thật
   if (!publicDoneSets.includes(displaySetNum)) {
     publicDoneSets.push(displaySetNum);
@@ -1481,6 +1494,36 @@ function stopWaitMusic() {
       m.volume = Math.max(0, 0.6 * (1 - i / steps));
       if (i >= steps) { clearInterval(iv); m.pause(); m.currentTime = 0; }
     }, 33);
+  }
+}
+
+// Nhạc chờ câu hỏi - loop khi hiển thị đáp án, CHỈ tắt khi chọn đáp án
+let questionWaitMusic = null;
+
+function startQuestionWaitMusic() {
+  if (!soundEnabled) return;
+  initSFX();
+  stopQuestionWaitMusic(0);
+  questionWaitMusic = new Audio(SFX.nhacChoCauHoi.src);
+  questionWaitMusic.loop = true;
+  questionWaitMusic.volume = 0.55;
+  questionWaitMusic.play().catch(() => {});
+}
+
+function stopQuestionWaitMusic(fadeMs = 250) {
+  if (questionWaitMusic) {
+    const m = questionWaitMusic;
+    questionWaitMusic = null;
+    if (!fadeMs) { try { m.pause(); m.currentTime = 0; } catch(e) {} return; }
+    // Fadeout nhanh để không đè lên tiếng đúng/sai
+    const steps = 10;
+    let i = 0;
+    const baseVol = m.volume || 0.55;
+    const iv = setInterval(() => {
+      i++;
+      try { m.volume = Math.max(0, baseVol * (1 - i / steps)); } catch(e) {}
+      if (i >= steps) { clearInterval(iv); try { m.pause(); m.currentTime = 0; } catch(e) {} }
+    }, Math.max(10, fadeMs / steps));
   }
 }
 
@@ -1748,6 +1791,7 @@ function finishShow() {
   stopPaperCannon();
   stopWaitSparkle();
   stopWaitMusic();
+  stopQuestionWaitMusic();
   // Đánh dấu SỐ CÔNG BỐ đã thi xong (✓ panel) + nhích con trỏ thật, rồi mở panel
   if (!publicDoneSets.includes(displaySetNum)) {
     publicDoneSets.push(displaySetNum);
@@ -1790,7 +1834,19 @@ function toggleFullscreen() {
 document.getElementById('soundToggle').onclick = () => {
   soundEnabled = !soundEnabled;
   document.getElementById('soundToggle').textContent = soundEnabled ? '🔊' : '🔇';
-  if (soundEnabled) { getAudioCtx(); soundClick(); }
+  if (!soundEnabled) {
+    stopQuestionWaitMusic(0);
+    stopWaitMusic();
+    stopRollDrum();
+  } else {
+    getAudioCtx(); soundClick();
+    // Bật lại nhạc chờ nếu đang ở màn câu hỏi chưa trả lời
+    if (quizActive && !isAnswered
+        && !document.getElementById('setPanelOverlay').classList.contains('show')
+        && !document.getElementById('finishOverlay').classList.contains('show')) {
+      startQuestionWaitMusic();
+    }
+  }
 };
 document.getElementById('soundToggle').addEventListener('mouseenter', soundHoverBtn);
 
