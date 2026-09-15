@@ -726,7 +726,7 @@
     color: #1a1a1a;
     border-color: var(--gold-light);
     z-index: 5;
-    animation: winnerGlow 0.42s ease-in-out 12;
+    animation: winnerGlow 0.42s ease-in-out 7;
   }
   .set-btn.winner .set-num { color: #1a1a1a; }
   @keyframes winnerGlow {
@@ -1181,7 +1181,7 @@ function pickAnswer(idx) {
       opts.forEach(o => o.classList.remove('picked-wrong', 'dim'));
       opts[q.correct].classList.add('picked-correct', 'blink-correct');
       opts.forEach((o, i) => { if (i !== q.correct) o.classList.add('dim'); });
-      scheduleFinishAfterAnswer(10000);
+      scheduleFinishAfterAnswer(5000);
     }, 800);
   }
 }
@@ -1401,18 +1401,18 @@ function randomPickSet() {
         btns[shownSet].classList.add('rolling');
         playSFX('btnClick', 0.7);
 
-        // Phase D: sau 0.8s - winner phóng to + nhấp nháy 5s + fanfare + reo hò
+        // Phase D: sau 0.8s - winner phóng to + nhấp nháy 3s + fanfare + reo hò
         setTimeout(() => {
           btns.forEach(b => b.classList.remove('rolling'));
           btns[shownSet].classList.add('winner');
           playSFX('chonBoDe', 0.85);
           spawnConfetti(60);
-          // Phase E: sau 5s - tắt hiệu ứng, vào thi
+          // Phase E: sau 3s - tắt hiệu ứng, vào thi
           // NGẦM: dùng realSet (thứ tự 1→10), GIAO DIỆN: badge hiển thị shownSet+1
           setTimeout(() => {
             btns[shownSet].classList.remove('winner');
             enterSet(shownSet, realSet);
-          }, 5000);
+          }, 3000);
         }, 800);
       }
     }, delay);
@@ -1454,7 +1454,7 @@ function finishCurrentSet() {
   setTimeout(() => startWaitMusic(), 6900);
 }
 
-function scheduleFinishAfterAnswer(delay = 10000) {
+function scheduleFinishAfterAnswer(delay = 5000) {
   if (currentIdx !== QUESTION_SETS[currentSet].length - 1) return;
   finishAnswerTimer = setTimeout(() => {
     if (quizActive && currentIdx === QUESTION_SETS[currentSet].length - 1) {
