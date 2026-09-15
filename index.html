@@ -1181,7 +1181,7 @@ function pickAnswer(idx) {
       opts.forEach(o => o.classList.remove('picked-wrong', 'dim'));
       opts[q.correct].classList.add('picked-correct', 'blink-correct');
       opts.forEach((o, i) => { if (i !== q.correct) o.classList.add('dim'); });
-      scheduleFinishAfterAnswer(900);
+      scheduleFinishAfterAnswer(10000);
     }, 800);
   }
 }
@@ -1454,7 +1454,7 @@ function finishCurrentSet() {
   setTimeout(() => startWaitMusic(), 6900);
 }
 
-function scheduleFinishAfterAnswer(delay = 1400) {
+function scheduleFinishAfterAnswer(delay = 10000) {
   if (currentIdx !== QUESTION_SETS[currentSet].length - 1) return;
   finishAnswerTimer = setTimeout(() => {
     if (quizActive && currentIdx === QUESTION_SETS[currentSet].length - 1) {
@@ -1465,6 +1465,7 @@ function scheduleFinishAfterAnswer(delay = 1400) {
 
 function nextQ() {
   soundClick();
+  clearTimeout(finishAnswerTimer);
   if (currentIdx < QUESTION_SETS[currentSet].length - 1) {
     currentIdx++;
     renderQuestion();
@@ -1475,6 +1476,7 @@ function nextQ() {
 
 function prevQ() {
   soundClick();
+  clearTimeout(finishAnswerTimer);
   if (currentIdx > 0) {
     currentIdx--;
     renderQuestion();
