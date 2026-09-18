@@ -1339,8 +1339,9 @@ function switchToSet(idx) {
 }
 
 // Mini game random: quay hiệu ứng đẹp
-// LOGIC NGẦM: SỐ CÔNG BỐ random trong 1→16; NỘI DUNG thật chạy tuần tự 1→12
+// LOGIC NGẦM: SỐ CÔNG BỐ theo kịch bản cố định từng lần bấm; NỘI DUNG thật chạy tuần tự
 // qua con trỏ nextRealIdx. ✓ ĐÃ THI trên panel gắn vào số công bố → không lộ bài.
+let randomPickCounter = 0; // đếm số lần đã bấm Ngẫu nhiên (để lấy số trong kịch bản)
 function randomPickSet() {
   // available = các SỐ CÔNG BỐ chưa bị ✓ (panel); nội dung thật = con trỏ tuần tự
   const available = [];
@@ -1356,8 +1357,15 @@ function randomPickSet() {
 
   // NỘI DUNG THẬT = bộ kế tiếp trong hàng đợi tuần tự (khán giả không thấy số này)
   const realSet = Math.min(nextRealIdx, QUESTION_SETS.length - 1);
-  // SỐ CÔNG BỐ = ngẫu nhiên trong các số chưa ✓ (chỉ để nhìn, để quay gameshow)
-  const shownSet = available[Math.floor(Math.random() * available.length)];
+  // SỐ CÔNG BỐ = kịch bản bốc cố định theo từng lần bấm Ngẫu nhiên:
+  // lần 1→12: bộ 5, 3, 11, 8, 6, 13, 15, 1, 4, 7, 9, 10 (hết kịch bản thì quay vòng lại)
+  const FIXED_PICK_SEQUENCE = [4, 2, 10, 7, 5, 12, 14, 0, 3, 6, 8, 9];
+  let shownSet = FIXED_PICK_SEQUENCE[randomPickCounter % FIXED_PICK_SEQUENCE.length];
+  if (publicDoneSets.includes(shownSet)) {
+    // Số trong kịch bản đã thi xong → dự phòng: chọn ngẫu nhiên trong số chưa ✓
+    shownSet = available[Math.floor(Math.random() * available.length)];
+  }
+  randomPickCounter++;
 
   // Tính số lần nháy để lần CUỐI cùng dừng đúng ở shownSet
   // Timeline ~5s + winner 5s:
