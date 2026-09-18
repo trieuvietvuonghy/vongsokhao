@@ -488,10 +488,9 @@
     width: 150px;
     height: 150px;
     object-fit: contain;
-    /* Biến dạng nội bộ ảnh tạo gợn vải, thay vì chỉ xoay cả lá cờ. */
-    filter: url(#flagWave) drop-shadow(0 6px 20px rgba(0,0,0,0.6)) drop-shadow(0 0 25px rgba(248,192,36,0.25));
+    filter: drop-shadow(0 6px 20px rgba(0,0,0,0.6)) drop-shadow(0 0 25px rgba(248,192,36,0.25));
     transform-origin: center;
-    will-change: transform, filter;
+    will-change: transform;
     animation: logoWave 4.8s ease-in-out infinite;
   }
   @keyframes logoWave {
@@ -853,15 +852,6 @@
 </style>
 </head>
 <body>
-<!-- Các nếp sóng lớn, ít dải để twd.png giống vải bay thay vì nhiễu hạt. -->
-<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
-  <filter id="flagWave" x="-15%" y="-15%" width="130%" height="130%">
-    <feTurbulence type="turbulence" baseFrequency="0.004 0.012" numOctaves="1" seed="12" result="windNoise">
-      <animate attributeName="baseFrequency" values="0.004 0.012;0.008 0.018;0.004 0.012" dur="5.6s" repeatCount="indefinite" />
-    </feTurbulence>
-    <feDisplacementMap in="SourceGraphic" in2="windNoise" scale="17" xChannelSelector="R" yChannelSelector="G" />
-  </filter>
-</svg>
 
 <div class="bg-anim" id="bgAnim"></div>
 
@@ -1931,6 +1921,77 @@ document.querySelectorAll('.control-bar .ctrl-btn, .start-overlay .start-btn-big
   btn.addEventListener('mouseenter', soundHoverBtn);
 });
 
+// Vẽ cờ theo từng dải dọc: mép trái gần cố định, biên độ tăng về phía đuôi cờ.
+// Sóng và vùng sáng/tối cùng chạy từ trái sang phải để tạo cảm giác vải gặp gió.
+function initFlagWaves() {
+  const source = new Image();
+  source.src = 'twd.png';
+  source.onload = () => {
+    const flags = [];
+    document.querySelectorAll('img.intro-logo[src="twd.png"]').forEach(img => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 360;
+      canvas.height = 360;
+      canvas.className = img.className;
+      canvas.style.cssText = img.style.cssText;
+      canvas.setAttribute('role', 'img');
+      canvas.setAttribute('aria-label', img.alt || 'Lá cờ');
+      img.replaceWith(canvas);
+      flags.push(canvas);
+    });
+
+    function drawFlag(canvas, time) {
+      const ctx = canvas.getContext('2d');
+      const cw = canvas.width;
+      const ch = canvas.height;
+      const drawW = cw * 0.9;
+      const drawH = drawW * source.height / source.width;
+      const startX = (cw - drawW) / 2;
+      const startY = (ch - drawH) / 2;
+      const strips = 64;
+      const sourceStrip = source.width / strips;
+      const destStrip = drawW / strips;
+      const phase = time * 0.002;
+
+      ctx.clearRect(0, 0, cw, ch);
+      for (let i = 0; i < strips; i++) {
+        const progress = i / (strips - 1);
+        const wave = progress * Math.PI * 2.35 - phase;
+        const strength = Math.pow(progress, 1.35);
+        const offsetY = Math.sin(wave) * 17 * strength;
+        const offsetX = Math.cos(wave) * 3 * strength;
+        const foldScale = 1 + Math.cos(wave) * 0.025 * strength;
+
+        ctx.drawImage(
+          source,
+          i * sourceStrip, 0, sourceStrip + 1, source.height,
+          startX + i * destStrip + offsetX, startY + offsetY,
+          destStrip + 1.2, drawH * foldScale
+        );
+      }
+
+      // Ánh sáng trên các nếp gấp chuyển động cùng pha với sóng.
+      ctx.globalCompositeOperation = 'source-atop';
+      for (let i = 0; i < strips; i++) {
+        const progress = i / (strips - 1);
+        const light = Math.cos(progress * Math.PI * 2.35 - phase);
+        ctx.fillStyle = light > 0
+          ? `rgba(255,255,255,${light * 0.075 * progress})`
+          : `rgba(65,0,0,${-light * 0.09 * progress})`;
+        ctx.fillRect(startX + i * destStrip, startY - 22, destStrip + 1.5, drawH + 44);
+      }
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    function animateFlags(time) {
+      flags.forEach(canvas => drawFlag(canvas, time));
+      requestAnimationFrame(animateFlags);
+    }
+    requestAnimationFrame(animateFlags);
+  };
+}
+
+initFlagWaves();
 createBgAnim();
 </script>
 </body>
