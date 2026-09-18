@@ -963,7 +963,7 @@
     <div class="finish-trophy">🏆</div>
     <h1>CHÚC MỪNG HAI ĐỘI!</h1>
     <div class="intro-tagline" style="margin-bottom: 34px;">đã hoàn thành phần thi của mình, mời 2 đội kế tiếp chuẩn bị.</div>
-    <button class="start-btn-big" onclick="openSetPanel()">📚 CHỌN BỘ CÂU HỎI TIẾP THEO</button>
+    <button class="start-btn-big" id="btnNextSet" style="display: none;" onclick="openSetPanel()">📚 CHỌN BỘ CÂU HỎI TIẾP THEO</button>
   </div>
 </div>
 
@@ -1342,6 +1342,7 @@ function switchToSet(idx) {
 // LOGIC NGẦM: SỐ CÔNG BỐ theo kịch bản cố định từng lần bấm; NỘI DUNG thật chạy tuần tự
 // qua con trỏ nextRealIdx. ✓ ĐÃ THI trên panel gắn vào số công bố → không lộ bài.
 let randomPickCounter = 0; // đếm số lần đã bấm Ngẫu nhiên (để lấy số trong kịch bản)
+let btnNextSetTimer = null; // hẹn giờ hiện nút chọn bộ tiếp theo trên màn chúc mừng
 function randomPickSet() {
   // available = các SỐ CÔNG BỐ chưa bị ✓ (panel); nội dung thật = con trỏ tuần tự
   const available = [];
@@ -1466,6 +1467,13 @@ function finishCurrentSet() {
   playSFX('hoanThanh', 0.85);
   setTimeout(() => startWaitSparkle(), 6900);
   setTimeout(() => startWaitMusic(), 6900);
+  // Nút chọn bộ tiếp theo xuất hiện chậm hơn 15s sau khi màn chúc mừng hiện ra
+  const btnNextSet = document.getElementById('btnNextSet');
+  btnNextSet.style.display = 'none';
+  clearTimeout(btnNextSetTimer);
+  btnNextSetTimer = setTimeout(() => {
+    btnNextSet.style.display = '';
+  }, 15000);
 }
 
 function scheduleFinishAfterAnswer(delay = 8000) {
