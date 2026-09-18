@@ -489,11 +489,41 @@
     height: 150px;
     object-fit: contain;
     filter: drop-shadow(0 6px 20px rgba(0,0,0,0.6)) drop-shadow(0 0 25px rgba(248,192,36,0.25));
-    animation: floatLogo 4s ease-in-out infinite;
+    /* Lượn sóng kiểu cờ bay: xoay 3D + nghiêng nhẹ + nhấp nhô theo sóng */
+    animation: logoWave 3.4s ease-in-out infinite;
+    transform-style: preserve-3d;
+    will-change: transform;
   }
-  @keyframes floatLogo {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+  @keyframes logoWave {
+    0%   { transform: perspective(700px) rotateY(-16deg) rotateZ(-2.5deg) skewX(-2deg); }
+    25%  { transform: perspective(700px) rotateY(0deg)    rotateZ(1deg)    skewX(1deg) translateY(-4px); }
+    50%  { transform: perspective(700px) rotateY(16deg)  rotateZ(2.5deg)  skewX(2deg); }
+    75%  { transform: perspective(700px) rotateY(0deg)    rotateZ(-1deg)   skewX(-1deg) translateY(-4px); }
+    100% { transform: perspective(700px) rotateY(-16deg) rotateZ(-2.5deg) skewX(-2deg); }
+  }
+  /* Vệt sáng lăng kính quét ngang qua logo, đón sóng */
+  .logo-shine {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+  .logo-shine::after {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -80%;
+    width: 45%;
+    height: 140%;
+    background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.05) 35%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.05) 65%, transparent 100%);
+    transform: skewX(-18deg);
+    animation: logoShineSweep 3.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes logoShineSweep {
+    0%, 55% { left: -80%; opacity: 0; }
+    65%     { opacity: 0.9; }
+    85%, 100% { left: 130%; opacity: 0; }
   }
 
   .intro-org {
@@ -860,7 +890,7 @@
 <div class="start-overlay" id="startOverlay">
   <div class="start-card">
     <div class="intro-logo-wrap">
-      <img src="twd.png" alt="Logo Ngành Kiểm tra Đảng" class="intro-logo">
+      <span class="logo-shine"><img src="twd.png" alt="Logo Ngành Kiểm tra Đảng" class="intro-logo"></span>
       <div class="intro-org">ĐẢNG ỦY XÃ TRIỆU VIỆT VƯƠNG</div>
     </div>
 
