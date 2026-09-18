@@ -501,30 +501,6 @@
     75%  { transform: perspective(700px) rotateY(0deg)    rotateZ(-1deg)   skewX(-1deg) translateY(-4px); }
     100% { transform: perspective(700px) rotateY(-16deg) rotateZ(-2.5deg) skewX(-2deg); }
   }
-  /* Vệt sáng lăng kính quét ngang qua logo, đón sóng */
-  .logo-shine {
-    position: relative;
-    display: inline-flex;
-    overflow: hidden;
-    border-radius: 50%;
-  }
-  .logo-shine::after {
-    content: '';
-    position: absolute;
-    top: -20%;
-    left: -80%;
-    width: 45%;
-    height: 140%;
-    background: linear-gradient(105deg, transparent 0%, rgba(255,255,255,0.05) 35%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.05) 65%, transparent 100%);
-    transform: skewX(-18deg);
-    animation: logoShineSweep 3.4s ease-in-out infinite;
-    pointer-events: none;
-  }
-  @keyframes logoShineSweep {
-    0%, 55% { left: -80%; opacity: 0; }
-    65%     { opacity: 0.9; }
-    85%, 100% { left: 130%; opacity: 0; }
-  }
 
   .intro-org {
     color: var(--gold);
@@ -890,7 +866,7 @@
 <div class="start-overlay" id="startOverlay">
   <div class="start-card">
     <div class="intro-logo-wrap">
-      <span class="logo-shine"><img src="twd.png" alt="Logo Ngành Kiểm tra Đảng" class="intro-logo"></span>
+      <img src="twd.png" alt="Logo Ngành Kiểm tra Đảng" class="intro-logo">
       <div class="intro-org">ĐẢNG ỦY XÃ TRIỆU VIỆT VƯƠNG</div>
     </div>
 
