@@ -488,18 +488,15 @@
     width: 150px;
     height: 150px;
     object-fit: contain;
-    filter: drop-shadow(0 6px 20px rgba(0,0,0,0.6)) drop-shadow(0 0 25px rgba(248,192,36,0.25));
-    /* Lượn sóng kiểu cờ bay: xoay 3D + nghiêng nhẹ + nhấp nhô theo sóng */
-    animation: logoWave 3.4s ease-in-out infinite;
-    transform-style: preserve-3d;
-    will-change: transform;
+    /* Biến dạng nội bộ ảnh tạo gợn vải, thay vì chỉ xoay cả lá cờ. */
+    filter: url(#flagWave) drop-shadow(0 6px 20px rgba(0,0,0,0.6)) drop-shadow(0 0 25px rgba(248,192,36,0.25));
+    transform-origin: center;
+    will-change: transform, filter;
+    animation: logoWave 4.8s ease-in-out infinite;
   }
   @keyframes logoWave {
-    0%   { transform: perspective(700px) rotateY(-16deg) rotateZ(-2.5deg) skewX(-2deg); }
-    25%  { transform: perspective(700px) rotateY(0deg)    rotateZ(1deg)    skewX(1deg) translateY(-4px); }
-    50%  { transform: perspective(700px) rotateY(16deg)  rotateZ(2.5deg)  skewX(2deg); }
-    75%  { transform: perspective(700px) rotateY(0deg)    rotateZ(-1deg)   skewX(-1deg) translateY(-4px); }
-    100% { transform: perspective(700px) rotateY(-16deg) rotateZ(-2.5deg) skewX(-2deg); }
+    0%, 100% { transform: translateY(0) rotateZ(-0.6deg); }
+    50% { transform: translateY(-4px) rotateZ(0.6deg); }
   }
 
   .intro-org {
@@ -856,6 +853,15 @@
 </style>
 </head>
 <body>
+<!-- Gợn ngang nhẹ để twd.png có cảm giác lá cờ/vải đang gặp gió. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <filter id="flagWave" x="-15%" y="-15%" width="130%" height="130%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.032" numOctaves="2" seed="12" result="windNoise">
+      <animate attributeName="baseFrequency" values="0.008 0.026;0.013 0.045;0.008 0.026" dur="4.8s" repeatCount="indefinite" />
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="windNoise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
 
 <div class="bg-anim" id="bgAnim"></div>
 
