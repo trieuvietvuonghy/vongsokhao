@@ -853,13 +853,13 @@
 </style>
 </head>
 <body>
-<!-- Gợn ngang nhẹ để twd.png có cảm giác lá cờ/vải đang gặp gió. -->
+<!-- Các nếp sóng lớn, ít dải để twd.png giống vải bay thay vì nhiễu hạt. -->
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
   <filter id="flagWave" x="-15%" y="-15%" width="130%" height="130%">
-    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.032" numOctaves="2" seed="12" result="windNoise">
-      <animate attributeName="baseFrequency" values="0.008 0.026;0.013 0.045;0.008 0.026" dur="4.8s" repeatCount="indefinite" />
+    <feTurbulence type="turbulence" baseFrequency="0.004 0.012" numOctaves="1" seed="12" result="windNoise">
+      <animate attributeName="baseFrequency" values="0.004 0.012;0.008 0.018;0.004 0.012" dur="5.6s" repeatCount="indefinite" />
     </feTurbulence>
-    <feDisplacementMap in="SourceGraphic" in2="windNoise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+    <feDisplacementMap in="SourceGraphic" in2="windNoise" scale="17" xChannelSelector="R" yChannelSelector="G" />
   </filter>
 </svg>
 
