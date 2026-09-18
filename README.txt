@@ -8,12 +8,11 @@ HỘI THI CÁN BỘ KIỂM TRA GIỎI - XÃ TRIỆU VIỆT VƯƠNG 2026
 ═══════════════════════════════════════════════
 🎮 index.html - CẤU HÌNH HỘI THI:
 ═══════════════════════════════════════════════
-• Hiển thị 16 số bộ câu hỏi, nội dung thật gồm 12 bộ đầu × 7 câu
+• 16 bộ câu hỏi × 7 câu, dùng đúng dữ liệu thật từ bộ 1→16
 • Mỗi lượt thi: 2 đội • Sai 2 lần: tự công bố đáp án
 • Bấm chuột vào đáp án A/B/C/D trên màn hình
-• Nút 📚: mở panel chọn bộ (hoặc Random 🎲 -
-  hiển thị ngẫu nhiên nhưng thực tế thi đúng 12 bộ
-  kế tiếp theo thứ tự)
+• Nút 📚: mở panel chọn bộ hoặc Random 🎲 chọn ngẫu nhiên
+  một bộ chưa thi; số hiển thị và nội dung là cùng một bộ
 • Nút 🏁 Kết thúc: khi 2 đội thi xong
 • Không dùng phím tắt - chỉ chuột
 • Nút ⛶ (góc phải dưới): toàn màn hình
@@ -30,7 +29,7 @@ CÁCH 1 (Python):
 
 CÁCH 2 (VS Code):
   Cài extension "Live Server" → chuột phải
-  display.html → Open with Live Server
+   index.html → Open with Live Server
 
 CÁCH 3 (Node.js):  npx serve
 
