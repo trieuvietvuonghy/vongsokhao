@@ -842,11 +842,69 @@
     .opt { min-height: 80px; padding: 12px 20px; }
     .opt-letter { width: 50px; height: 50px; font-size: 24px; }
   }
+  /* ================= CỔNG OTP BẢO VỆ ================= */
+  .otp-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 300; /* trên MỌI màn hình, chặn toàn bộ trang cho tới khi nhập đúng OTP */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 30%, rgba(46, 4, 12, 0.97), rgba(18, 1, 4, 0.99));
+    backdrop-filter: blur(20px);
+  }
+  .otp-overlay.hidden { display: none; }
+  .otp-sub {
+    color: rgba(255,255,255,0.85);
+    font-size: 15px;
+    margin-bottom: 22px;
+  }
+  .otp-input {
+    display: block;
+    margin: 0 auto 10px;
+    width: 280px;
+    padding: 14px 18px;
+    font-family: inherit;
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: 12px;
+    text-align: center;
+    color: var(--gold-light);
+    background: rgba(0,0,0,0.4);
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    outline: none;
+  }
+  .otp-input:focus {
+    box-shadow: 0 0 0 4px rgba(248,192,36,0.25);
+  }
+  .otp-error {
+    display: none;
+    color: var(--danger);
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  .otp-error.show { display: block; }
 </style>
 </head>
 <body>
 
 <div class="bg-anim" id="bgAnim"></div>
+
+<!-- Cổng OTP bảo vệ trang -->
+<div class="otp-overlay" id="otpOverlay">
+  <div class="start-card">
+    <div class="intro-logo-wrap" style="margin-bottom: 18px;">
+      <img src="twd.png" alt="Logo" class="intro-logo" style="width: 110px; height: 110px;">
+    </div>
+    <h1>NHẬP MÃ OTP</h1>
+    <div class="otp-sub">Trang này được bảo vệ. Vui lòng nhập mã OTP 6 số để tiếp tục.</div>
+    <input class="otp-input" id="otpInput" type="text" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="••••••">
+    <div class="otp-error" id="otpError">Mã OTP không đúng. Vui lòng thử lại.</div>
+    <button class="start-btn-big" onclick="verifyOTP()">✓ XÁC NHẬN</button>
+  </div>
+</div>
 
 <button class="fullscreen-toggle" id="fullscreenToggle" title="Toàn màn hình (F)">⛶</button>
 <button class="sound-toggle" id="soundToggle">🔊</button>
@@ -1955,6 +2013,137 @@ function initFlagWaves() {
 
 initFlagWaves();
 createBgAnim();
+</script>
+
+<script>
+// ============ CỔNG OTP BẢO VỆ (chạy local) ============
+// Khóa chia sẻ với trang tao-otp.html (chỉ dùng local). Mã 6 số đổi mỗi 5 phút (TOTP).
+const OTP_SECRET = 'X7K9QZT2RVM4LP8W';
+const OTP_STEP = 300;                 // mã đổi mỗi 5 phút
+const OTP_SESSION_MS = 24 * 60 * 60 * 1000; // phiên truy cập 24h sau khi nhập đúng
+
+// ---- SHA-256 thuần JS (chạy được cả localhost lẫn file://) ----
+function sha256(ascii) {
+  function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
+  var mathPow = Math.pow, maxWord = mathPow(2, 32), result = '', words = [];
+  var asciiBitLength = ascii.length * 8;
+  var hash = sha256.h = sha256.h || [];
+  var k = sha256.k = sha256.k || [];
+  var primeCounter = k.length;
+  var isComposite = {};
+  for (var candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (var i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+      hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+      k[primeCounter++] = (mathPow(candidate, 1/3) * maxWord) | 0;
+    }
+  }
+  ascii += '\x80';
+  while (ascii.length % 64 - 56) ascii += '\x00';
+  for (var i2 = 0; i2 < ascii.length; i2++) {
+    var j2 = ascii.charCodeAt(i2);
+    if (j2 >> 8) return '';
+    words[i2 >> 2] |= j2 << ((3 - i2) % 4) * 8;
+  }
+  words[words.length] = ((asciiBitLength / maxWord) | 0);
+  words[words.length] = (asciiBitLength);
+  for (var j3 = 0; j3 < words.length;) {
+    var w = words.slice(j3, j3 += 16);
+    var oldHash = hash;
+    hash = hash.slice(0, 8);
+    for (var i3 = 0; i3 < 64; i3++) {
+      var w15 = w[i3 - 15], w2 = w[i3 - 2];
+      var a = hash[0], e = hash[4];
+      var temp1 = hash[7]
+        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+        + ((e & hash[5]) ^ ((~e) & hash[6]))
+        + k[i3]
+        + (w[i3] = (i3 < 16) ? w[i3] : (
+            w[i3 - 16]
+            + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+            + w[i3 - 7]
+            + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+          ) | 0);
+      var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+        + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash = [(temp1 + temp2) | 0].concat(hash);
+      hash[4] = (hash[4] + temp1) | 0;
+    }
+    for (var i4 = 0; i4 < 8; i4++) hash[i4] = (hash[i4] + oldHash[i4]) | 0;
+  }
+  for (var i5 = 0; i5 < 8; i5++) {
+    for (var j5 = 3; j5 + 1; j5--) {
+      var b = (hash[i5] >> (j5 * 8)) & 255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+
+// ---- HMAC-SHA256 ----
+function hmacSha256(key, message) {
+  var blockSize = 64;
+  if (key.length > blockSize) key = sha256(key);
+  while (key.length < blockSize) key += '\x00';
+  var oKey = '', iKey = '';
+  for (var i = 0; i < blockSize; i++) {
+    var c = key.charCodeAt(i);
+    oKey += String.fromCharCode(c ^ 0x5c);
+    iKey += String.fromCharCode(c ^ 0x36);
+  }
+  return sha256(oKey + sha256(iKey + message));
+}
+
+// ---- Mã OTP 6 số cho chu kỳ hiện tại (offset = số chu kỳ lùi lại) ----
+function totpCode(offset = 0) {
+  var counter = Math.floor(Date.now() / 1000 / OTP_STEP) - offset;
+  var msg = '';
+  for (var i = 7; i >= 0; i--) msg += String.fromCharCode((counter >> (i * 8)) & 255);
+  var h = hmacSha256(OTP_SECRET, msg);
+  var idx = parseInt(h.slice(-1), 16) & 15;
+  var bin = parseInt(h.substr(idx * 2, 8), 16) & 0x7fffffff;
+  return String(bin % 1000000).padStart(6, '0');
+}
+
+function otpSessionValid() {
+  var exp = parseInt(localStorage.getItem('otpSessionExp') || '0', 10);
+  return exp > Date.now();
+}
+
+function verifyOTP() {
+  var val = document.getElementById('otpInput').value.trim();
+  var err = document.getElementById('otpError');
+  if (val === totpCode(0) || val === totpCode(1)) {
+    // Đúng mã (chu kỳ hiện tại hoặc vừa hết hạn) → mở phiên 24h
+    localStorage.setItem('otpSessionExp', String(Date.now() + OTP_SESSION_MS));
+    document.getElementById('otpOverlay').classList.add('hidden');
+    err.classList.remove('show');
+    document.getElementById('otpInput').value = '';
+    getAudioCtx();
+    soundClick();
+  } else {
+    err.classList.add('show');
+    document.getElementById('otpInput').value = '';
+    soundWrong();
+  }
+}
+
+document.getElementById('otpInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') verifyOTP();
+});
+// Chỉ nhận số
+document.getElementById('otpInput').addEventListener('input', function() {
+  this.value = this.value.replace(/\D/g, '').slice(0, 6);
+});
+
+(function initOTPGate() {
+  if (otpSessionValid()) {
+    document.getElementById('otpOverlay').classList.add('hidden');
+  } else {
+    document.getElementById('otpOverlay').classList.remove('hidden');
+    document.getElementById('otpInput').focus();
+  }
+})();
 </script>
 </body>
 </html>

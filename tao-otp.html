@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tạo mã OTP - Hội Thi Cán Bộ Kiểm Tra Giỏi (Chỉ dùng LOCAL)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --gold: #f8c024;
+    --gold-light: #ffea79;
+    --danger: #ef4444;
+  }
+  html, body {
+    font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at 50% 25%, #2e040c 0%, #1a0105 50%, #120104 100%);
+    min-height: 100vh;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    text-align: center;
+    border: 2px solid var(--gold);
+    border-radius: 28px;
+    padding: 44px clamp(32px, 6vw, 72px);
+    background: linear-gradient(135deg, rgba(66, 0, 8, 0.8) 0%, rgba(26, 1, 5, 0.9) 100%);
+    box-shadow: 0 0 0 6px rgba(248,192,36,0.18), 0 20px 70px rgba(0,0,0,0.8);
+  }
+  .title {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .otp-code {
+    font-size: clamp(64px, 12vw, 110px);
+    font-weight: 900;
+    letter-spacing: 14px;
+    color: var(--gold-light);
+    text-shadow: 0 0 40px rgba(248,192,36,0.5);
+    margin-bottom: 18px;
+    font-variant-numeric: tabular-nums;
+  }
+  .countdown {
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 26px;
+    font-variant-numeric: tabular-nums;
+  }
+  .note {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    max-width: 420px;
+  }
+  .note b { color: var(--gold); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">🔐 MÃ OTP HIỆN TẠI</div>
+    <div class="otp-code" id="otpCode">------</div>
+    <div class="countdown" id="countdown">Đổi mã sau 05:00</div>
+    <div class="note">
+      Ứng dụng tạo mã <b>chỉ dùng trên máy của bạn (local)</b>.<br>
+      Mã OTP <b>6 số</b> thay đổi mỗi <b>5 phút</b>.<br>
+      Nhập mã này vào trang hội thi để mở phiên truy cập <b>24 giờ</b>.
+    </div>
+  </div>
+
+<script>
+// Khóa phải GIỐNG NHAU với index.html
+const OTP_SECRET = 'X7K9QZT2RVM4LP8W';
+const OTP_STEP = 300; // mã đổi mỗi 5 phút
+
+function sha256(ascii) {
+  function rightRotate(value, amount) { return (value >>> amount) | (value << (32 - amount)); }
+  var mathPow = Math.pow, maxWord = mathPow(2, 32), result = '', words = [];
+  var asciiBitLength = ascii.length * 8;
+  var hash = sha256.h = sha256.h || [];
+  var k = sha256.k = sha256.k || [];
+  var primeCounter = k.length;
+  var isComposite = {};
+  for (var candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (var i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+      hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+      k[primeCounter++] = (mathPow(candidate, 1/3) * maxWord) | 0;
+    }
+  }
+  ascii += '\x80';
+  while (ascii.length % 64 - 56) ascii += '\x00';
+  for (var i2 = 0; i2 < ascii.length; i2++) {
+    var j2 = ascii.charCodeAt(i2);
+    if (j2 >> 8) return '';
+    words[i2 >> 2] |= j2 << ((3 - i2) % 4) * 8;
+  }
+  words[words.length] = ((asciiBitLength / maxWord) | 0);
+  words[words.length] = (asciiBitLength);
+  for (var j3 = 0; j3 < words.length;) {
+    var w = words.slice(j3, j3 += 16);
+    var oldHash = hash;
+    hash = hash.slice(0, 8);
+    for (var i3 = 0; i3 < 64; i3++) {
+      var w15 = w[i3 - 15], w2 = w[i3 - 2];
+      var a = hash[0], e = hash[4];
+      var temp1 = hash[7]
+        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+        + ((e & hash[5]) ^ ((~e) & hash[6]))
+        + k[i3]
+        + (w[i3] = (i3 < 16) ? w[i3] : (
+            w[i3 - 16]
+            + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+            + w[i3 - 7]
+            + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+          ) | 0);
+      var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+        + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+      hash = [(temp1 + temp2) | 0].concat(hash);
+      hash[4] = (hash[4] + temp1) | 0;
+    }
+    for (var i4 = 0; i4 < 8; i4++) hash[i4] = (hash[i4] + oldHash[i4]) | 0;
+  }
+  for (var i5 = 0; i5 < 8; i5++) {
+    for (var j5 = 3; j5 + 1; j5--) {
+      var b = (hash[i5] >> (j5 * 8)) & 255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+
+function hmacSha256(key, message) {
+  var blockSize = 64;
+  if (key.length > blockSize) key = sha256(key);
+  while (key.length < blockSize) key += '\x00';
+  var oKey = '', iKey = '';
+  for (var i = 0; i < blockSize; i++) {
+    var c = key.charCodeAt(i);
+    oKey += String.fromCharCode(c ^ 0x5c);
+    iKey += String.fromCharCode(c ^ 0x36);
+  }
+  return sha256(oKey + sha256(iKey + message));
+}
+
+function totpCode(offset = 0) {
+  var counter = Math.floor(Date.now() / 1000 / OTP_STEP) - offset;
+  var msg = '';
+  for (var i = 7; i >= 0; i--) msg += String.fromCharCode((counter >> (i * 8)) & 255);
+  var h = hmacSha256(OTP_SECRET, msg);
+  var idx = parseInt(h.slice(-1), 16) & 15;
+  var bin = parseInt(h.substr(idx * 2, 8), 16) & 0x7fffffff;
+  return String(bin % 1000000).padStart(6, '0');
+}
+
+function tick() {
+  document.getElementById('otpCode').textContent = totpCode(0);
+  var rem = OTP_STEP - (Math.floor(Date.now() / 1000) % OTP_STEP);
+  var mm = String(Math.floor(rem / 60)).padStart(2, '0');
+  var ss = String(rem % 60).padStart(2, '0');
+  document.getElementById('countdown').textContent = 'Đổi mã sau ' + mm + ':' + ss;
+}
+setInterval(tick, 250);
+tick();
+</script>
+</body>
+</html>

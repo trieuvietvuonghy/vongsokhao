@@ -3,7 +3,23 @@ HỘI THI CÁN BỘ KIỂM TRA GIỎI - XÃ TRIỆU VIỆT VƯƠNG 2026
 ═══════════════════════════════════════════════
 📂 TRONG GÓI:
 ═══════════════════════════════════════════════
-1️⃣  index.html   - ỨNG DỤNG HỘI THI
+1️⃣  index.html     - ỨNG DỤNG HỘI THI (bảo vệ OTP)
+2️⃣  tao-otp.html   - ỨNG DỤNG TẠO MÃ OTP (CHỈ dùng local)
+
+═══════════════════════════════════════════════
+🔐 BẢO VỆ OTP:
+═══════════════════════════════════════════════
+• Mở index.html → trang đòi nhập mã OTP 6 số
+• Mở tao-otp.html trên máy của bạn (local) để
+  xem mã hiện tại - mã đổi mỗi 5 PHÚT
+• Nhập đúng mã → phiên truy cập 24 GIỜ
+  (tắt trình duyệt mở lại vẫn vào được nếu
+  chưa quá 24h; quá 24h phải nhập lại OTP)
+• Chấp nhận cả mã của chu kỳ VỪA hết hạn
+  (tránh lệch giờ giữa 2 máy)
+• tao-otp.html KHÔNG đưa lên internet công khai!
+  Hai file phải dùng CÙNG 1 khóa bí mật
+  (đã cấu hình sẵn trong source)
 
 ═══════════════════════════════════════════════
 🎮 index.html - CẤU HÌNH HỘI THI:
