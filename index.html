@@ -886,6 +886,22 @@
     margin-bottom: 12px;
   }
   .otp-error.show { display: block; }
+
+  /* Dòng bản quyền - hiện ở chân mọi màn hình */
+  .copyright-line {
+    position: fixed;
+    bottom: 6px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.65);
+    z-index: 230;
+    pointer-events: none;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    padding: 0 16px;
+  }
 </style>
 </head>
 <body>
@@ -1000,6 +1016,9 @@
 </div>
 
 <div class="confetti-layer" id="confettiLayer"></div>
+
+<!-- Dòng bản quyền -->
+<div class="copyright-line">Ứng dụng Hội thi này thuộc sở hữu của Ủy ban Kiểm tra Đảng ủy xã Triệu Việt Vương, tỉnh Hưng Yên. Việc phát tán, sử dụng trái phép bị nghiêm cấm.</div>
 
 <!-- Finish overlay -->
 <div class="finish-overlay" id="finishOverlay">
