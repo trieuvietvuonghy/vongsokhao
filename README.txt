@@ -17,7 +17,9 @@ HỘI THI CÁN BỘ KIỂM TRA GIỎI - XÃ TRIỆU VIỆT VƯƠNG 2026
   chưa quá 24h; quá 24h phải nhập lại OTP)
 • Chấp nhận cả mã của chu kỳ VỪA hết hạn
   (tránh lệch giờ giữa 2 máy)
-• tao-otp.html KHÔNG đưa lên internet công khai!
+• tao-otp.html dùng qua GitHub Pages:
+  https://trieuvietvuonghy.github.io/vongsokhao/tao-otp.html
+  (hoặc mở local: http://localhost:8000/tao-otp.html)
   Hai file phải dùng CÙNG 1 khóa bí mật
   (đã cấu hình sẵn trong source)
 

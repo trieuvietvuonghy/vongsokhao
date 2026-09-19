@@ -52,6 +52,38 @@
     margin-bottom: 26px;
     font-variant-numeric: tabular-nums;
   }
+  .copy-btn {
+    background: linear-gradient(135deg, var(--gold), #c98a0c);
+    color: #120104;
+    border: none;
+    padding: 14px 42px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(248,192,36,0.45);
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 26px;
+  }
+  .copy-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(248,192,36,0.65);
+  }
+  .copy-btn:active { transform: translateY(-1px); }
+  .copy-ok {
+    display: none;
+    color: #22c55e;
+    font-weight: 800;
+    font-size: 15px;
+    margin: -18px 0 18px;
+  }
+  .copy-ok.show { display: block; }
   .note {
     font-size: 13px;
     color: rgba(255,255,255,0.6);
@@ -66,6 +98,8 @@
     <div class="title">🔐 MÃ OTP HIỆN TẠI</div>
     <div class="otp-code" id="otpCode">------</div>
     <div class="countdown" id="countdown">Đổi mã sau 05:00</div>
+    <button class="copy-btn" onclick="copyOTP()">📋 COPY MÃ OTP</button>
+    <div class="copy-ok" id="copyOk">✓ Đã copy mã OTP!</div>
     <div class="note">
       Ứng dụng tạo mã <b>chỉ dùng trên máy của bạn (local)</b>.<br>
       Mã OTP <b>6 số</b> thay đổi mỗi <b>5 phút</b>.<br>
@@ -156,6 +190,30 @@ function totpCode(offset = 0) {
   var idx = parseInt(h.slice(-1), 16) & 15;
   var bin = parseInt(h.substr(idx * 2, 8), 16) & 0x7fffffff;
   return String(bin % 1000000).padStart(6, '0');
+}
+
+function copyOTP() {
+  var code = document.getElementById('otpCode').textContent;
+  var ok = document.getElementById('copyOk');
+  function done() {
+    ok.classList.add('show');
+    setTimeout(() => ok.classList.remove('show'), 2000);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(done).catch(() => fallbackCopy(code, done));
+  } else {
+    fallbackCopy(code, done);
+  }
+}
+function fallbackCopy(text, done) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); done(); } catch (e) {}
+  document.body.removeChild(ta);
 }
 
 function tick() {
