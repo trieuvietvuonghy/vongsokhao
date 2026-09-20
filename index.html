@@ -800,10 +800,22 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    /* Đẩy card lên trên một chút + chừa chỗ cố định cho nút dưới card → card không nhảy */
+    padding-bottom: 60px;
     background: radial-gradient(circle at 50% 30%, rgba(46, 4, 12, 0.95), rgba(18, 1, 4, 0.98));
     backdrop-filter: blur(20px);
   }
   .finish-overlay.show { display: flex; }
+  /* Nút hiện mờ dần→đậm dần, luôn chiếm chỗ để card giữ cố định vị trí */
+  .fade-btn {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1.2s ease, visibility 1.2s;
+  }
+  .fade-btn.show {
+    visibility: visible;
+    opacity: 1;
+  }
   /* Canvas pháo hoa nằm sau card */
   .finish-overlay .fx-canvas {
     position: absolute;
@@ -1042,7 +1054,7 @@
     <h1 id="finishTitle">CHÚC MỪNG HAI ĐỘI</h1>
     <div class="intro-tagline" id="finishTagline" style="margin-bottom: 34px;">đã hoàn thành phần thi của mình!</div>
   </div>
-  <button class="start-btn-big" id="btnNextSet" style="display: none; margin-top: 22px;" onclick="openSetPanel()">📚 CHỌN BỘ CÂU HỎI</button>
+    <button class="start-btn-big fade-btn" id="btnNextSet" style="margin-top: 22px;" onclick="openSetPanel()">📚 CHỌN BỘ CÂU HỎI</button>
 </div>
 
 <script>
@@ -1539,10 +1551,11 @@ function finishCurrentSet() {
   setTimeout(() => startWaitMusic(), 6900);
   // Nút chọn bộ tiếp theo xuất hiện chậm hơn 15s sau khi màn chúc mừng hiện ra
   const btnNextSet = document.getElementById('btnNextSet');
-  btnNextSet.style.display = 'none';
+  // Nút luôn chiếm chỗ (visibility) nên card không nhảy; hiện mờ→đậm dần sau 20s
+  btnNextSet.classList.remove('show');
   clearTimeout(btnNextSetTimer);
   btnNextSetTimer = setTimeout(() => {
-    btnNextSet.style.display = '';
+    btnNextSet.classList.add('show');
   }, 20000);
   // Giai đoạn 1: chúc mừng 9s → Giai đoạn 2: mời 2 đội tiếp theo lên sân khấu
   setFinishPhase(1);
@@ -1616,7 +1629,7 @@ function stopWaitMusic() {
 let questionWaitMusic = null;
 let questionWaitTimer = null;
 const QUESTION_WAIT_DELAY = 20000;
-const QUESTION_WAIT_VOL = 0.25;
+const QUESTION_WAIT_VOL = 0.20;
 
 function startQuestionWaitMusic() {
   stopQuestionWaitMusic(0);
