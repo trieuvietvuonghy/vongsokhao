@@ -806,11 +806,11 @@
     backdrop-filter: blur(20px);
   }
   .finish-overlay.show { display: flex; }
-  /* Nút hiện mờ dần→đậm dần, luôn chiếm chỗ để card giữ cố định vị trí */
+  /* Nút hiện mờ dần→đậm dần (chậm, từ từ rõ), luôn chiếm chỗ để card giữ cố định vị trí */
   .fade-btn {
     visibility: hidden;
     opacity: 0;
-    transition: opacity 1.2s ease, visibility 1.2s;
+    transition: opacity 3s ease-in, visibility 3s;
   }
   .fade-btn.show {
     visibility: visible;
