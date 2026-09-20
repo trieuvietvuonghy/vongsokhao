@@ -1557,10 +1557,10 @@ function finishCurrentSet() {
   btnNextSetTimer = setTimeout(() => {
     btnNextSet.classList.add('show');
   }, 20000);
-  // Giai đoạn 1: chúc mừng 12s → Giai đoạn 2: mời 2 đội tiếp theo lên sân khấu (từ giây 13)
+  // Giai đoạn 1: chúc mừng 14s → Giai đoạn 2: mời 2 đội tiếp theo lên sân khấu (từ giây 15)
   setFinishPhase(1);
   clearTimeout(finishPhaseTimer);
-  finishPhaseTimer = setTimeout(() => setFinishPhase(2), 12000);
+  finishPhaseTimer = setTimeout(() => setFinishPhase(2), 14000);
 }
 
 function scheduleFinishAfterAnswer(delay = 8000) {
