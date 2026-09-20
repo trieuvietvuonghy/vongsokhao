@@ -1035,10 +1035,11 @@
   <div class="start-card">
     <div class="intro-logo-wrap" style="margin-bottom: 20px;">
       <img src="twd.png" alt="Logo" class="intro-logo" style="width: 110px; height: 110px;">
+      <div class="intro-org">BAN TỔ CHỨC HỘI THI</div>
     </div>
     <div class="finish-trophy" id="finishTrophy">🏆</div>
     <h1 id="finishTitle">CHÚC MỪNG HAI ĐỘI</h1>
-    <div class="intro-tagline" id="finishTagline" style="margin-bottom: 34px;">đã hoàn thành phần thi của mình.</div>
+    <div class="intro-tagline" id="finishTagline" style="margin-bottom: 34px;">đã hoàn thành phần thi của mình!</div>
     <button class="start-btn-big" id="btnNextSet" style="display: none;" onclick="openSetPanel()">📚 CHỌN BỘ CÂU HỎI</button>
   </div>
 </div>
@@ -1419,7 +1420,7 @@ function setFinishPhase(phase) {
   } else {
     trophy.textContent = '🏆';
     title.style.display = '';
-    tagline.textContent = 'đã hoàn thành phần thi của mình.';
+    tagline.textContent = 'đã hoàn thành phần thi của mình!';
   }
 }
 function randomPickSet() {
@@ -1539,11 +1540,11 @@ function finishCurrentSet() {
   clearTimeout(btnNextSetTimer);
   btnNextSetTimer = setTimeout(() => {
     btnNextSet.style.display = '';
-  }, 15000);
-  // Giai đoạn 1: chúc mừng 7s → Giai đoạn 2: mời 2 đội tiếp theo lên sân khấu
+  }, 20000);
+  // Giai đoạn 1: chúc mừng 9s → Giai đoạn 2: mời 2 đội tiếp theo lên sân khấu
   setFinishPhase(1);
   clearTimeout(finishPhaseTimer);
-  finishPhaseTimer = setTimeout(() => setFinishPhase(2), 7000);
+  finishPhaseTimer = setTimeout(() => setFinishPhase(2), 9000);
 }
 
 function scheduleFinishAfterAnswer(delay = 8000) {
