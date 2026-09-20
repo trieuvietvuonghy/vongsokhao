@@ -1036,9 +1036,9 @@
     <div class="intro-logo-wrap" style="margin-bottom: 20px;">
       <img src="twd.png" alt="Logo" class="intro-logo" style="width: 110px; height: 110px;">
     </div>
-    <div class="finish-trophy">🏆</div>
-    <h1>CHÚC MỪNG HAI ĐỘI</h1>
-    <div class="intro-tagline" style="margin-bottom: 34px;">đã hoàn thành phần thi của mình, mời 2 đội kế tiếp chuẩn bị.</div>
+    <div class="finish-trophy" id="finishTrophy">🏆</div>
+    <h1 id="finishTitle">CHÚC MỪNG HAI ĐỘI</h1>
+    <div class="intro-tagline" id="finishTagline" style="margin-bottom: 34px;">đã hoàn thành phần thi của mình.</div>
     <button class="start-btn-big" id="btnNextSet" style="display: none;" onclick="openSetPanel()">📚 CHỌN BỘ CÂU HỎI</button>
   </div>
 </div>
@@ -1293,6 +1293,7 @@ function openSetPanel() {
   stopWaitSparkle();
   stopWaitMusic();
   stopQuestionWaitMusic();
+  clearTimeout(finishPhaseTimer);
   document.getElementById('finishOverlay').classList.remove('show');
   document.getElementById('setPanelOverlay').classList.add('show');
   renderSetGrid();
@@ -1402,6 +1403,25 @@ function switchToSet(idx) {
 // Mini game random: quay hiệu ứng đẹp
 // Chọn thật ngẫu nhiên một bộ chưa thi; số dừng và nội dung là cùng một bộ.
 let btnNextSetTimer = null; // hẹn giờ hiện nút chọn bộ tiếp theo trên màn chúc mừng
+let finishPhaseTimer = null; // hẹn giờ đổi giai đoạn màn chúc mừng (7s chúc mừng → mời đội tiếp)
+
+// Màn chúc mừng 2 giai đoạn:
+//   Giai đoạn 1 (0-7s): 🏆 CHÚC MỪNG HAI ĐỘI - đã hoàn thành phần thi của mình.
+//   Giai đoạn 2 (từ giây 8): ⏳ - Mời hai đội tiếp theo lên sân khấu chuẩn bị thi
+function setFinishPhase(phase) {
+  const trophy = document.getElementById('finishTrophy');
+  const title = document.getElementById('finishTitle');
+  const tagline = document.getElementById('finishTagline');
+  if (phase === 2) {
+    trophy.textContent = '⏳';
+    title.style.display = 'none';
+    tagline.textContent = 'Mời hai đội tiếp theo lên sân khấu chuẩn bị thi';
+  } else {
+    trophy.textContent = '🏆';
+    title.style.display = '';
+    tagline.textContent = 'đã hoàn thành phần thi của mình.';
+  }
+}
 function randomPickSet() {
   const available = [];
   for (let i = 0; i < QUESTION_SETS.length; i++) {
@@ -1520,6 +1540,10 @@ function finishCurrentSet() {
   btnNextSetTimer = setTimeout(() => {
     btnNextSet.style.display = '';
   }, 15000);
+  // Giai đoạn 1: chúc mừng 7s → Giai đoạn 2: mời 2 đội tiếp theo lên sân khấu
+  setFinishPhase(1);
+  clearTimeout(finishPhaseTimer);
+  finishPhaseTimer = setTimeout(() => setFinishPhase(2), 7000);
 }
 
 function scheduleFinishAfterAnswer(delay = 8000) {
