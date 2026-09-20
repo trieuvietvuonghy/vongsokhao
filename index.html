@@ -797,6 +797,7 @@
     inset: 0;
     z-index: 170;
     display: none;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background: radial-gradient(circle at 50% 30%, rgba(46, 4, 12, 0.95), rgba(18, 1, 4, 0.98));
@@ -1035,13 +1036,13 @@
   <div class="start-card">
     <div class="intro-logo-wrap" style="margin-bottom: 20px;">
       <img src="twd.png" alt="Logo" class="intro-logo" style="width: 110px; height: 110px;">
-      <div class="intro-org">BAN TỔ CHỨC HỘI THI</div>
+      <div class="intro-org" id="finishOrg">BAN TỔ CHỨC HỘI THI</div>
     </div>
     <div class="finish-trophy" id="finishTrophy">🏆</div>
     <h1 id="finishTitle">CHÚC MỪNG HAI ĐỘI</h1>
     <div class="intro-tagline" id="finishTagline" style="margin-bottom: 34px;">đã hoàn thành phần thi của mình!</div>
-    <button class="start-btn-big" id="btnNextSet" style="display: none;" onclick="openSetPanel()">📚 CHỌN BỘ CÂU HỎI</button>
   </div>
+  <button class="start-btn-big" id="btnNextSet" style="display: none; margin-top: 22px;" onclick="openSetPanel()">📚 CHỌN BỘ CÂU HỎI</button>
 </div>
 
 <script>
@@ -1224,8 +1225,6 @@ function pickAnswer(idx) {
   if (wrongPicks.includes(idx)) {
     return;
   }
-  // TẮT nhạc chờ câu hỏi ngay khi chọn đáp án (kể cả đúng/sai lần 1)
-  stopQuestionWaitMusic();
   soundClick();
 
   // Chọn ĐÚNG
@@ -1304,8 +1303,8 @@ function closeSetPanel() {
   soundClick();
   stopRollDrum(); // tránh trống kêu lơ lửng nếu đóng giữa lúc quay
   document.getElementById('setPanelOverlay').classList.remove('show');
-  // Quay lại câu hỏi đang dở (chưa trả lời) → bật lại nhạc chờ
-  if (quizActive && !isAnswered
+  // Đóng panel quay lại màn câu hỏi → bật lại nhạc chờ (nếu còn trong màn thi)
+  if (quizActive
       && !document.getElementById('finishOverlay').classList.contains('show')) {
     startQuestionWaitMusic();
   }
@@ -1394,7 +1393,7 @@ function switchToSet(idx) {
   if (quizActive && idx === currentSet) {
     soundClick();
     document.getElementById('setPanelOverlay').classList.remove('show');
-    if (!isAnswered) startQuestionWaitMusic();
+    startQuestionWaitMusic();
     return;
   }
   soundClick();
@@ -1412,14 +1411,18 @@ let finishPhaseTimer = null; // hẹn giờ đổi giai đoạn màn chúc mừn
 function setFinishPhase(phase) {
   const trophy = document.getElementById('finishTrophy');
   const title = document.getElementById('finishTitle');
+  const org = document.getElementById('finishOrg');
   const tagline = document.getElementById('finishTagline');
   if (phase === 2) {
     trophy.textContent = '⏳';
-    title.style.display = 'none';
+    // visibility hidden (không display:none) để giữ nguyên chỗ, card không đổi kích thước
+    title.style.visibility = 'hidden';
+    org.style.display = 'none';
     tagline.textContent = 'Mời hai đội tiếp theo lên sân khấu chuẩn bị thi';
   } else {
     trophy.textContent = '🏆';
-    title.style.display = '';
+    title.style.visibility = '';
+    org.style.display = '';
     tagline.textContent = 'đã hoàn thành phần thi của mình!';
   }
 }
@@ -1608,39 +1611,29 @@ function stopWaitMusic() {
   }
 }
 
-// Nhạc chờ câu hỏi - phát loop từ giây 15, to dần đều đến giây 20 đạt vol chuẩn, CHỈ tắt khi chọn đáp án
+// Nhạc chờ câu hỏi - hẹn 20s sau khi câu hỏi/đáp án hiện ra mới phát loop (vol 0.25)
+// CHỈ hủy khi: chuyển câu / mở panel / kết thúc / tắt tiếng. Chọn đáp án KHÔNG tắt nhạc.
 let questionWaitMusic = null;
 let questionWaitTimer = null;
-const QUESTION_WAIT_DELAY = 15000;
-const QUESTION_WAIT_VOL = 0.35;
-const QUESTION_WAIT_FADEIN = 5000; // 15s→20s: to dần đều lên vol chuẩn
+const QUESTION_WAIT_DELAY = 20000;
+const QUESTION_WAIT_VOL = 0.25;
 
 function startQuestionWaitMusic() {
   stopQuestionWaitMusic(0);
   if (!soundEnabled) return;
   initSFX();
-  // Phát từ giây 15 sau khi câu hỏi hiện ra (nếu vẫn chưa trả lời), rồi to dần đến giây 20
+  // Hẹn 20s sau khi câu hỏi/đáp án hiện ra mới phát (nếu vẫn còn trong màn thi)
   questionWaitTimer = setTimeout(() => {
     questionWaitTimer = null;
     if (!soundEnabled) return;
-    if (isAnswered) return;
     if (!quizActive) return;
     if (document.getElementById('setPanelOverlay').classList.contains('show')) return;
     if (document.getElementById('finishOverlay').classList.contains('show')) return;
     const a = new Audio(SFX.nhacChoCauHoi.src);
     a.loop = true;
-    a.volume = 0;
+    a.volume = QUESTION_WAIT_VOL;
     questionWaitMusic = a;
     a.play().catch(() => {});
-    // To dần đều trong 5s lên mức chuẩn
-    const steps = 50, stepTime = QUESTION_WAIT_FADEIN / steps;
-    let i = 0;
-    const iv = setInterval(() => {
-      if (questionWaitMusic !== a) { clearInterval(iv); return; }
-      i++;
-      try { a.volume = Math.min(QUESTION_WAIT_VOL, QUESTION_WAIT_VOL * i / steps); } catch(e) {}
-      if (i >= steps) clearInterval(iv);
-    }, stepTime);
   }, QUESTION_WAIT_DELAY);
 }
 
@@ -1977,8 +1970,8 @@ document.getElementById('soundToggle').onclick = () => {
     stopRollDrum();
   } else {
     getAudioCtx(); soundClick();
-    // Bật lại nhạc chờ nếu đang ở màn câu hỏi chưa trả lời
-    if (quizActive && !isAnswered
+    // Bật lại nhạc chờ nếu đang ở màn câu hỏi
+    if (quizActive
         && !document.getElementById('setPanelOverlay').classList.contains('show')
         && !document.getElementById('finishOverlay').classList.contains('show')) {
       startQuestionWaitMusic();
