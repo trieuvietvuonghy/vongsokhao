@@ -28,6 +28,16 @@
     min-height: 100vh;
     color: #fff;
     overflow: hidden;
+    /* Bảo vệ nội dung: chặn chọn chữ + nhấn giữ trên điện thoại */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  /* Chặn in trang */
+  @media print {
+    body { display: none !important; }
   }
 
   body::before {
@@ -2163,6 +2173,27 @@ document.getElementById('otpInput').addEventListener('input', function() {
     document.getElementById('otpInput').focus();
   }
 })();
+</script>
+
+<script>
+// ============ LỚP BẢO VỆ NỘI DUNG ============
+// Chặn chuột phải
+document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+// Chặn chọn chữ (kéo chuột / nhấn giữ trên điện thoại)
+document.addEventListener('selectstart', function(e) { e.preventDefault(); });
+// Chặn sao chép / cắt / kéo thả
+['copy', 'cut', 'dragstart', 'drop'].forEach(function(ev) {
+  document.addEventListener(ev, function(e) { e.preventDefault(); });
+});
+// Chặn phím tắt: F12, Ctrl+Shift+I/J/C (DevTools), Ctrl+C/A/S/U/P (copy/chọn tất cả/lưu/xem nguồn/in)
+document.addEventListener('keydown', function(e) {
+  var k = (e.key || '').toUpperCase();
+  var blocked =
+    e.key === 'F12' ||
+    (e.ctrlKey && e.shiftKey && (k === 'I' || k === 'J' || k === 'C')) ||
+    (e.ctrlKey && (k === 'C' || k === 'A' || k === 'S' || k === 'U' || k === 'P'));
+  if (blocked) { e.preventDefault(); e.stopPropagation(); }
+});
 </script>
 </body>
 </html>
